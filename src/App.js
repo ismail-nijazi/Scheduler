@@ -1,8 +1,15 @@
-import React from "react";
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import RootRoutes from './Router';
+import './styles/index.scss';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <div></div>
+    <BrowserRouter>
+      <Navbar />
+      <RootRoutes />
+    </BrowserRouter>
   );
 }
 

@@ -1,0 +1,80 @@
+@import "config";
+
+nav{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-width: 200px;
+	max-width: 300px;
+	width: 15%;
+	min-height: 100vh;
+	background-color: $primary;
+	padding:2rem;
+	transition: transform 1s;
+	.nav-btn{
+		position: absolute;
+		transform: translateX(38px);
+		top: 20px;
+		right: 0;
+		width:40px;
+		height: 60px;
+		cursor: pointer;
+		background-color: $primary;
+		border: none;
+		outline: none;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		color: $whiteText;
+	}
+
+	.nav-profile{
+		margin-bottom:5rem;
+		.profile-image{
+			display: inline-block;
+			width: 60px;
+			vertical-align: middle;
+			overflow: hidden;
+			img{
+				display: block;
+				width: 100%;
+				border: 1px solid $whiteText;
+				padding: 3px;
+				border-radius: 30px;
+			}
+		}
+		span{
+			vertical-align: middle;
+			margin-left: 1rem;
+		}
+	}
+
+	.links{
+		display: flex;
+		flex-direction: column;
+		gap:0.5rem;
+		.nav-link{
+			color: $text;
+			width: fit-content;
+			text-decoration: none;
+			text-align: left;
+		}
+
+		.nav-link:hover{
+			color: $secondary;
+		}
+		.active{
+			color: $secondary;
+			text-decoration: underline;
+		}
+	}
+
+	.sub-title{
+		padding: 0.5rem 0;
+		border-bottom: 1px solid $text;
+		margin: 1rem 0 2rem 0;
+	}
+}
+
+.navbar{
+	transform: translateX(-100%);
+}
