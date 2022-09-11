@@ -71,7 +71,11 @@ nav{
 	}
 
 	.sub-title{
+<<<<<<< HEAD
 		@include sub-title;
+=======
+		padding: 0.5rem 0;
+>>>>>>> 55c85e3 (added navbar (#1))
 		border-bottom: 1px solid $text;
 		margin: 1rem 0 2rem 0;
 	}
