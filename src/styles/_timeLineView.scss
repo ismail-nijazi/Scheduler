@@ -1,0 +1,60 @@
+@import "config";
+
+.container{	
+	display: flex;
+  flex-flow: column;
+	height: 100%;
+	width: 85%;
+	margin: auto;
+	.header{
+		display: flex;
+		justify-content: space-between;
+		button{
+			background-color: $primary;
+			color: $whiteText;
+			padding: 6px;
+			border: none;
+			border-radius: 3px;
+			outline: none;
+			margin: 0 3px;
+			cursor: pointer;
+			*{
+				display: block;
+			}
+		}
+	}
+	.days{
+		padding: 2rem 0;
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid $lightGray;
+		span{
+			width: 100%;
+		}
+	}
+	.tasksContainer{
+		position: relative;
+		flex-grow: 1;
+		flex-shrink: 1;
+		overflow-x:hidden;
+		.column{
+			display: inline-block;
+			width: calc(100% / 7);
+			height: 99%;
+			background-color: $whiteText;
+			z-index: -1;
+			&:nth-child(even){
+				background-color: lighten($lightGray, 7);
+			}
+		}
+		.tasks{
+			position: absolute;
+			top:1rem;
+			left: 0;
+			gap: 0.3rem;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}

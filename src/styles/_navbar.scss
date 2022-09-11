@@ -1,11 +1,12 @@
 @import "config";
 
 nav{
-	position: relative;
+	position: absolute;
+	left: 0;
+	top: 0;
 	display: flex;
 	flex-direction: column;
 	min-width: 200px;
-	max-width: 300px;
 	width: 15%;
 	min-height: 100vh;
 	background-color: $primary;
@@ -31,7 +32,8 @@ nav{
 		margin-bottom:5rem;
 		.profile-image{
 			display: inline-block;
-			width: 60px;
+			min-width: 50px;
+			width: 30%;
 			vertical-align: middle;
 			overflow: hidden;
 			img{
@@ -39,7 +41,7 @@ nav{
 				width: 100%;
 				border: 1px solid $whiteText;
 				padding: 3px;
-				border-radius: 30px;
+				border-radius: 50%;
 			}
 		}
 		span{
@@ -69,7 +71,7 @@ nav{
 	}
 
 	.sub-title{
-		padding: 0.5rem 0;
+		@include sub-title;
 		border-bottom: 1px solid $text;
 		margin: 1rem 0 2rem 0;
 	}

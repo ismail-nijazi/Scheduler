@@ -2,11 +2,25 @@
 $primary: #FFC495;
 $secondary: #F15C5C;
 $text: #222;
-$whiteText: #fefefe;
+$gray: #919191;
+$lightGray: #e0e0e0;
+$whiteText: #fff;
+
 
 
 // Font 
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&display=swap');
 *{
 	font-family: 'Titillium Web', sans-serif;
+}
+
+// Common styles
+
+@mixin title{
+	font-size: 1.5rem;
+}
+
+@mixin sub-title{
+	font-size: 1.1rem;
+	padding: 0.5rem 0;
 }

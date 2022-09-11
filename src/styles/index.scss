@@ -1,8 +1,25 @@
 @use "navbar";
+@use "timeLineView";
+@use "task";
 @import "config";
 
 *{
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+}
+
+.App{
+	display: flex;
+	flex-direction: row;
+	.page{
+		flex-basis: 100%;
+		padding: 50px 80px;
+		margin: auto 0 ;
+		height: 100vh;
+		transition: margin 1s;
+	}
+	.with_navbar_open{
+		margin-left: 15%;
+	}
 }

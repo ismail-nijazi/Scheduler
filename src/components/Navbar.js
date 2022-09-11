@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { FaAngleRight } from 'react-icons/fa';
+import React from 'react';
+import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-function Navbar() {
-  const [visible, setVisible] = useState(true);
+function Navbar({visible, setVisibility}) {
 
   const navButtonOnClick = () => {
-    setVisible(!visible);
+    setVisibility(!visible);
   };
 
   return (
-    <nav className={!visible && 'navbar'}>
+    <nav className={!visible ? 'navbar' : ""}>
       <button type="button" className="nav-btn" onClick={navButtonOnClick}>
-        <FaAngleRight size={30} />
+				{ !visible ?
+					<FaAngleRight size={30} /> : <FaAngleLeft size={30}/>
+				}
       </button>
       <div className="nav-profile">
         <div className="profile-image">

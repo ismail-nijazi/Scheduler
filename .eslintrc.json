@@ -4,11 +4,11 @@
         "es2021": true
     },
     "extends": [
-        "plugin:react/recommended",
-		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-        "airbnb",
-		"plugin:prettier/recommended"
+			"airbnb",
+			"prettier",
+			"plugin:react/recommended",
+			"plugin:react/recommended",
+			"plugin:react-hooks/recommended"
 	],
     "overrides": [],
     "parserOptions": {
@@ -20,15 +20,23 @@
 		"react-hooks"
     ],
     "rules": {
-		"react/jsx-key": ["warn", { "checkFragmentShorthand": true}],
-		"react-hooks/rules-of-hooks": "error",
-		"react-hooks/exhaustive-deps": "warn",
-		"react/jsx-filename-extension": [
-			"warn", 
-			{ 
-				"extensions": [".js", ".jsx"] 
-			}
-		],
-		"global-require":"off"
+			"no-unused-vars": [
+				"warn", { 
+					"vars": "all",
+					"args": "after-used"
+				}
+			],
+			"react/jsx-key": ["warn", { "checkFragmentShorthand": true}],
+			"react-hooks/rules-of-hooks": "error",
+			"react-hooks/exhaustive-deps": "warn",
+			"react/jsx-filename-extension": [
+				"warn", 
+				{ 
+					"extensions": [".js", ".jsx"] 
+				}
+			],
+			"global-require":"off",
+			"max-len": ["error", {"code":80, "ignoreUrls": true}],
+			"react/prop-types": "off"
     }
 }
