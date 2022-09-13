@@ -4,7 +4,7 @@
         "es2021": true
     },
     "extends": [
-			"airbnb",
+			"eslint:recommended",
 			"prettier",
 			"plugin:react/recommended",
 			"plugin:react/recommended",
@@ -36,7 +36,24 @@
 				}
 			],
 			"global-require":"off",
-			"max-len": ["error", {"code":80, "ignoreUrls": true}],
-			"react/prop-types": "off"
+			"max-len": ["error", {"code": 90, "ignoreUrls": true}],
+			"react/prop-types": "off",
+			"no-tabs": "off",
+			"no-param-reassign": ["error", {
+				"props": true,
+				"ignorePropertyModificationsFor": [
+					"state"
+				]
+    	}],
+			   "jsx-a11y/label-has-associated-control": ["error", {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }],
+      "jsx-a11y/label-has-for": ["error", {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }]
     }
 }

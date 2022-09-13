@@ -7,6 +7,7 @@ nav{
 	display: flex;
 	flex-direction: column;
 	min-width: 200px;
+	max-width: 300px;
 	width: 15%;
 	min-height: 100vh;
 	background-color: $primary;
@@ -19,23 +20,23 @@ nav{
 		right: 0;
 		width:40px;
 		height: 60px;
-		cursor: pointer;
-		background-color: $primary;
-		border: none;
-		outline: none;
 		border-top-right-radius: 5px;
 		border-bottom-right-radius: 5px;
-		color: $whiteText;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.nav-profile{
 		margin-bottom:5rem;
-		.profile-image{
+		.profile-btn{
 			display: inline-block;
 			min-width: 50px;
 			width: 30%;
 			vertical-align: middle;
 			overflow: hidden;
+			border-radius: 50%;
+			padding:0;
 			img{
 				display: block;
 				width: 100%;
@@ -47,6 +48,26 @@ nav{
 		span{
 			vertical-align: middle;
 			margin-left: 1rem;
+		}
+		.options{
+			display: flex;
+			flex-flow: column;
+			margin-top: 1rem;
+			background-color: #eeeeee77;
+			padding: 10px;
+			border-radius: 5px;
+			transition: transform 1s;
+			.btn{
+				width: fit-content;
+				color: darken($gray, 20);
+			}
+			.btn:hover{
+				color: $secondary;
+			}
+		}
+
+		.hide{
+			transform: translateX(-300px);
 		}
 	}
 
@@ -60,7 +81,6 @@ nav{
 			text-decoration: none;
 			text-align: left;
 		}
-
 		.nav-link:hover{
 			color: $secondary;
 		}

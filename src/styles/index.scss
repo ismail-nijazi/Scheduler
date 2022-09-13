@@ -1,6 +1,7 @@
 @use "navbar";
 @use "timeLineView";
 @use "task";
+@use "profile";
 @import "config";
 
 *{
@@ -22,4 +23,56 @@
 	.with_navbar_open{
 		margin-left: 15%;
 	}
+
 }
+
+.modal{
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom:0;
+	background-color: rgba(0,0,0,0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+	width: 100%; /* Full width */
+  height: 100%; /* Full height */
+}
+
+.hidden{
+	display: none;
+}
+
+.row{
+	display: flex;
+	justify-content: space-between;
+	.col{
+		flex-grow: 1;
+	}
+}
+
+.btn{
+	outline: none;
+	border: none;
+	border-radius: 3px;
+	font-size: 1rem;
+	padding: 5px 10px;
+	cursor: pointer;
+	color: $whiteText;
+}
+
+.danger-btn{
+	background-color: $secondary !important;
+}
+
+.primary-btn{
+	background-color: $primary !important;
+}
+
+.transparent-btn{
+	background-color: transparent !important;
+}
+
+
