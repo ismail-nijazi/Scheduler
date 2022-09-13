@@ -1,9 +1,13 @@
 @import "config";
 
 nav{
+<<<<<<< HEAD
 	position: absolute;
 	left: 0;
 	top: 0;
+=======
+	position: relative;
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 	display: flex;
 	flex-direction: column;
 	min-width: 200px;
@@ -20,15 +24,26 @@ nav{
 		right: 0;
 		width:40px;
 		height: 60px;
+<<<<<<< HEAD
 		border-top-right-radius: 5px;
 		border-bottom-right-radius: 5px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+=======
+		cursor: pointer;
+		background-color: $primary;
+		border: none;
+		outline: none;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		color: $whiteText;
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 	}
 
 	.nav-profile{
 		margin-bottom:5rem;
+<<<<<<< HEAD
 		.profile-btn{
 			display: inline-block;
 			min-width: 50px;
@@ -37,18 +52,30 @@ nav{
 			overflow: hidden;
 			border-radius: 50%;
 			padding:0;
+=======
+		.profile-image{
+			display: inline-block;
+			width: 60px;
+			vertical-align: middle;
+			overflow: hidden;
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 			img{
 				display: block;
 				width: 100%;
 				border: 1px solid $whiteText;
 				padding: 3px;
+<<<<<<< HEAD
 				border-radius: 50%;
+=======
+				border-radius: 30px;
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 			}
 		}
 		span{
 			vertical-align: middle;
 			margin-left: 1rem;
 		}
+<<<<<<< HEAD
 		.options{
 			display: flex;
 			flex-flow: column;
@@ -69,6 +96,8 @@ nav{
 		.hide{
 			transform: translateX(-300px);
 		}
+=======
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 	}
 
 	.links{
@@ -81,6 +110,10 @@ nav{
 			text-decoration: none;
 			text-align: left;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 		.nav-link:hover{
 			color: $secondary;
 		}
@@ -92,10 +125,14 @@ nav{
 
 	.sub-title{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		@include sub-title;
 =======
 		padding: 0.5rem 0;
 >>>>>>> 55c85e3 (added navbar (#1))
+=======
+		padding: 0.5rem 0;
+>>>>>>> 3a61874c624eafe1781d662061a41d72d903b88a
 		border-bottom: 1px solid $text;
 		margin: 1rem 0 2rem 0;
 	}
