@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import * as moment from 'moment';
+import { Link } from "react-router-dom";
+import moment from 'moment';
 import { FaChevronRight, FaChevronLeft, FaPlus } from 'react-icons/fa';
 import TimelineTask from '../components/TimelineTask';
 
@@ -7,29 +8,32 @@ const data = [
   {
     id: 1,
     description: 'Orem ipsum dolor sit amet, consectetur adipiscing elit.',
-    category: 'cat_1',
+    category_id: 0,
     starting_time: '2022-09-013 14:00:00',
     deadline: '2022-09-18 14:00:00',
     estimated_duration: 5,
-    actual_duration: 8,
+		actual_duration: 8,
+		status: 1,
   },
   {
     id: 2,
     description: 'Morbi id finibus augue, nec tristique elit,',
-    category: 'cat_1',
+    category_id:1,
     starting_time: '2022-010-09 14:00:00',
     deadline: '2022-10-19 14:00:00',
     estimated_duration: 5,
-    actual_duration: 8,
+		actual_duration: 8,
+		status: 2,
   },
   {
     id: 3,
     description: 'Vivamus et accumsan tortor, vel dictum eli',
-    category: 'cat_2',
+    category_id: 2,
     starting_time: '2022-09-12 15:00:00',
     deadline: '2022-09-23 15:00:00',
     estimated_duration: 5,
-    actual_duration: 8,
+		actual_duration: 8,
+		status: 3,
   },
 ];
 
@@ -91,15 +95,15 @@ function TimelineView() {
   };
 
   return (
-    <div className="container">
+    <div className="page-container time-line-view">
       <div className="header">
         <h3>
           {endOfWeek.toLocaleString('default', { month: 'long', year: 'numeric' })}
         </h3>
         <div className="buttons">
-          <button type="button" className="add-btn">
+          <Link to="/task/new" type="button" className="add-btn">
             <FaPlus size={20} />
-          </button>
+          </Link>
         </div>
       </div>
       <div className="week-buttons">

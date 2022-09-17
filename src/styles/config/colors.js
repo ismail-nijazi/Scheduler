@@ -12,3 +12,10 @@ export default [
   '#256D85aa',
   '#FFDBA4aa',
 ];
+
+export const statusColors = {
+	NOT_STARTED: "#eba86a",
+	ON_GOING: "#73bab2",
+	COMPELTED: "#4da358",
+	CANCELED: "#d46161",
+}

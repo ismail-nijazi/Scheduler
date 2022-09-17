@@ -1,0 +1,64 @@
+@import "../config/config";
+
+
+.timeline-task{
+	padding: 0.8rem;
+	border-radius: 4px;
+	cursor: pointer;
+	-webkit-box-shadow: 7px 6px 13px -10px $gray; 
+	box-shadow: 7px 6px 13px -10px $gray;
+	color: $text;
+	text-decoration: none;
+	.time{
+		color: $text;
+		font-size: 0.9rem;
+		padding-right: 1rem;
+		color: darken($primary,10);
+	}
+	.status{
+		font-size: 0.9rem;
+		display: inline-block;
+		.status-indicator{
+			display: inline-block;
+			vertical-align:middle; 
+			width: 0.9rem;
+			height: 0.9rem;
+			border-radius: 50%;
+		}
+		.status-text{
+			margin-right: 5px;
+		}
+	}
+	.text{
+		display: block;
+		font-weight: 400;
+		font-size: 1rem;
+	}
+	&:hover{
+		outline: 1px solid lighten($secondary, 20);
+	}
+}
+
+
+.task{
+	box-shadow:none;
+	border: 1px solid $lightGray;
+	margin-top:5px;
+	cursor:default;
+	&:hover{
+		outline: none;
+	}
+	.col-2{
+		flex-grow: 2;
+	}
+	.buttons{
+		display: flex;
+		justify-content: flex-end;
+		.btn{
+			color: darken($primary,10);
+			&:hover{
+				color: $secondary;
+			}
+		}
+	}
+}
