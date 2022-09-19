@@ -9,7 +9,6 @@ nav{
 	width: 15%;
 	min-height: 100vh;
 	background-color: $primary;
-	padding:2rem;
 	transition: transform 1s;
 	z-index: $z_index_3;
 	.nav-btn{
@@ -27,6 +26,7 @@ nav{
 	}
 
 	.nav-profile{
+		padding: 2rem;
 		margin-bottom:5rem;
 		.profile-btn{
 			display: inline-block;
@@ -62,6 +62,7 @@ nav{
 		display: flex;
 		flex-direction: column;
 		gap:0.5rem;
+		padding: 0 2rem;
 		.nav-link{
 			color: $text;
 			width: fit-content;
@@ -81,6 +82,11 @@ nav{
 		@include sub-title;
 		border-bottom: 1px solid $text;
 		margin: 1rem 0 2rem 0;
+	}
+
+	.footer{
+		justify-self: end;
+		margin-top: auto;
 	}
 }
 

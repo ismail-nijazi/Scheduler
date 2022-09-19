@@ -5,6 +5,7 @@ $text: #222;
 $gray: #919191;
 $lightGray: #e0e0e0;
 $whiteText: #fff;
+$link: #3b8ad9; 
 
 // z-index
 $z_index_under: -1;
@@ -47,7 +48,7 @@ $z_index_over: 999;
 }
 
 @mixin input{
-	padding: 5px 10px;
+	padding:10px;
 	font-size: 1rem;
 	outline: none;
 	border: none;
