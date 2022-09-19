@@ -1,8 +1,10 @@
-@use "navbar";
-@use "timeLineView";
-@use "task";
-@use "profile";
-@import "config";
+@use "./components/navbar";
+@use "./components/task";
+@use "./views/timeLineView";
+@use "./views/profile";
+@use "./views/tasksView";
+@use "./views/editTaskView";
+@import "./config/config";
 
 *{
 	padding: 0;
@@ -23,7 +25,19 @@
 	.with_navbar_open{
 		margin-left: 15%;
 	}
-
+	.page-container{
+		display: flex;
+		flex-flow: column;
+		height: 100%;
+		width: 85%;
+		margin: auto;
+	}
+	.spinner-container{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
 }
 
 .modal{
@@ -36,7 +50,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 999;
+	z-index: $z_index_over;
 	width: 100%; /* Full width */
   height: 100%; /* Full height */
 }
@@ -47,6 +61,7 @@
 
 .row{
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	.col{
 		flex-grow: 1;
@@ -67,12 +82,45 @@
 	background-color: $secondary !important;
 }
 
+.sucess-btn{
+	background-color: #48c044 !important;
+}
+
+
 .primary-btn{
 	background-color: $primary !important;
 }
 
+.title{
+	color: darken($gray, 25);
+}
+
 .transparent-btn{
 	background-color: transparent !important;
+	color: darken($gray,10);
+}
+
+
+@media only screen and (max-width: 768px){
+	.App{
+		.with_navbar_open{
+			margin-left: 0%;
+		}
+		.page-container{
+			width: 90%;
+		}
+	}
+}
+
+@media only screen and (max-width: 450px){
+	.App{
+		.page{
+			padding: 2rem 2rem;
+		}
+		.page-container{
+			width: 95%;
+		}
+	}
 }
 
 

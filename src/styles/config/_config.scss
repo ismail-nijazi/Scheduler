@@ -1,0 +1,56 @@
+// COLORS
+$primary: #FFC495;
+$secondary: #F15C5C;
+$text: #222;
+$gray: #919191;
+$lightGray: #e0e0e0;
+$whiteText: #fff;
+
+// z-index
+$z_index_under: -1;
+$z_index_1: 1;
+$z_index_2: 2;
+$z_index_3: 3;
+$z_index_over: 999;
+
+
+// Font 
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&display=swap');
+*{
+	font-family: 'Titillium Web', sans-serif;
+}
+
+// Common styles
+@mixin title{
+	font-size: 1.5rem;
+}
+
+@mixin sub-title{
+	font-size: 1.1rem;
+	padding: 0.5rem 0;
+}
+
+@mixin options{
+	display: flex;
+	flex-flow: column;
+	margin-top: 1rem;
+	padding: 10px;
+	border-radius: 5px;
+	transition: transform 1s;
+	.btn{
+		width: fit-content;
+		color: darken($gray, 20);
+	}
+	.btn:hover{
+		color: $secondary;
+	}
+}
+
+@mixin input{
+	padding: 5px 10px;
+	font-size: 1rem;
+	outline: none;
+	border: none;
+	background-color: $lightGray;
+	border-radius: 3px;
+}

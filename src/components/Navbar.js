@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import { showProfile } from '../store/slices/profile';
 
 function Navbar({ visible, setVisibility }) {
-  const [optionsVisible, showOptions] = useState(false);
+	const [optionsVisible, showOptions] = useState(false);
   const dispatch = useDispatch();
 
   const navButtonOnClick = () => {
@@ -25,7 +25,7 @@ function Navbar({ visible, setVisibility }) {
       <div className="nav-profile">
         <button
           className="btn transparent-btn profile-btn"
-          onClick={() => showOptions(true)}
+          onClick={() => showOptions(!optionsVisible)}
           type="button"
         >
           <img src={require('../assets/images/profile.png')} alt="profile" />
@@ -54,8 +54,8 @@ function Navbar({ visible, setVisibility }) {
         <NavLink to="/timeline" className="nav-link">
           Timeline
         </NavLink>
-        <NavLink to="/favorites" className="nav-link">
-          Favorites
+        <NavLink to="/tasks" className="nav-link">
+          Tasks
         </NavLink>
       </div>
       <h4 className="sub-title">Projects</h4>
