@@ -48,7 +48,7 @@ function EditTaskView() {
                 Description
               </label>
 							<textarea
-								value={task.description}
+								value={newTask.description}
 								onChange={(event) => setTask({
 									...newTask, description: event.target.value
 								})}
@@ -108,7 +108,7 @@ function EditTaskView() {
 								value={newTask.deadline}
 								onChange={(newValue) =>
 									setTask({
-										...newTask, starting_time: newValue
+										...newTask, deadline: newValue
 									})}
 								renderInput={(params) =>
 									<TextField {...params} />
