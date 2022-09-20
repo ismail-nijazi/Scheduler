@@ -42,12 +42,12 @@ function Navbar({ visible, setVisibility }) {
           >
             Profile
           </button>
-          <button
+          {/* <button
             type="button"
             className="btn transparent-btn"
           >
             Settings
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="links">
@@ -58,15 +58,21 @@ function Navbar({ visible, setVisibility }) {
           Tasks
         </NavLink>
       </div>
-      <h4 className="sub-title">Projects</h4>
-      <div className="links ">
+			<div className="links ">
+				<h4 className="sub-title">Projects</h4>
         <NavLink to="/project/1" className="nav-link">
           School
         </NavLink>
         <NavLink to="/project/2" className="nav-link">
           Work
         </NavLink>
-      </div>
+			</div>
+			<div className="footer">
+				<div className="logo">
+					<span className="text">scheduler</span>
+					<div className="cover"></div>
+				</div>
+			</div>
     </nav>
   );
 }

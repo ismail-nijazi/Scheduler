@@ -31,7 +31,7 @@ const data = [
   {
     id: 3,
     description: 'Vivamus et accumsan tortor, vel dictum eli',
-    category_id: 1,
+    category_id: 2,
     starting_time: moment('2022-09-12 15:00:00'),
     deadline: moment('2022-09-23 15:00:00'),
     estimated_duration: 5,
@@ -57,8 +57,8 @@ function TasksView() {
 		setSearch(event.target.value);
 		const filteredTasks = data.filter((task) => {
 			if (
-				task.description.toLowerCase().includes(searchPhrase) ||
-				task.category.toLowerCase().includes(searchPhrase)
+				task.description.toLowerCase().includes(searchPhrase)
+				// ||task.category_id.toLowerCase().includes(searchPhrase)
 			) {
 				return true;
 			}
@@ -80,9 +80,9 @@ function TasksView() {
 				break;
 			case SORTING_OPTIONS.PROJECT:
 				tasksCopy.sort((taskA, taskB) =>
-					taskA.category.localeCompare(taskB.category)
+					taskA.category_id - taskB.category_id
 				);
-				setSort(SORTING_OPTIONS.STARTING_DATE)
+				setSort(SORTING_OPTIONS.PROJECT)
 		}
 
 		setTasks(tasksCopy);

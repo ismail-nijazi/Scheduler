@@ -4,7 +4,9 @@
 @use "./views/profile";
 @use "./views/tasksView";
 @use "./views/editTaskView";
+@use "./views/authView";
 @import "./config/config";
+@import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
 
 *{
 	padding: 0;
@@ -37,6 +39,24 @@
 		justify-content: center;
 		align-items: center;
 		height: 100%;
+	}
+}
+
+.logo{
+	display: block;
+	width: 100%;
+	position: relative;
+	z-index: $z_index_1;
+	overflow: hidden;
+	.text{
+		z-index: $z_index_over;
+		display: block;
+		width: 100%;
+		text-align: center;
+		text-transform: uppercase;
+		font-size: 1.8rem;
+		font-family: 'Iceland', cursive;
+		color: $text;
 	}
 }
 
