@@ -1,62 +1,84 @@
-@import "../config/config";
-.profile{
-	position: relative;
-	background-color: $whiteText;
-	width: 50%;
-	border-radius: 7px;
-	overflow: hidden;
-	.close-btn{
-		position: absolute;
-		right: 1rem;
-		top: 1rem;
-		z-index: $z_index_1;
-		button{
-			color: lighten($lightGray, 5);
-		}
-	}
-	.head{
-		position: relative;
-		background: radial-gradient(circle, lighten($secondary, 5) 0%, #ffc495 100%);
-		height: 200px;
-		width: 100%;
-		.profile-image{
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-				bottom: -70px;
-				border: none;
-				outline: none;
-				width: 140px;
-				height: 140px;
-				vertical-align: middle;
-				img{
-					display: block;
-					width: 100%;
-					border-radius: 50%;
-				}
-		}
-	}
-	.content{
-		position: relative;
-		padding-bottom: 5rem;
-		width: 70%;
-		margin: 100px auto 10px auto; 
-		.row{
-			margin-top: 1rem;
-			label, span{
-				display: block;
-				margin-bottom: 6px;
-			}
-			input{
-				@include input;
-				width: 90%;
-				max-width: 300px;
-			}
-		}
+@import '../config/config';
+.profile {
+  position: relative;
+  background-color: $whiteText;
+  width: 50%;
+  max-height: 80%;
+  border-radius: 7px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  .close-btn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: $z_index_1;
+    button {
+      color: lighten($lightGray, 5);
+    }
+  }
+  .head {
+    position: relative;
+    background: radial-gradient(circle, lighten($secondary, 5) 0%, #ffc495 100%);
+    height: 200px;
+    width: 100%;
+    .profile-image {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -70px;
+      border: none;
+      outline: none;
+      width: 140px;
+      height: 140px;
+      vertical-align: middle;
+      img {
+        display: block;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+  }
+  .content {
+    position: relative;
+    padding-bottom: 5rem;
+    width: 70%;
+    margin: 100px auto 10px auto;
+    .row {
+      margin-top: 1rem;
+      label,
+      span {
+        display: block;
+        margin-bottom: 6px;
+      }
+      input {
+        @include input;
+        width: 90%;
+        max-width: 300px;
+      }
+    }
 
-		.footer{
-			margin-top: 5rem;
-		}
-	}
+    .footer {
+      margin-top: 5rem;
+    }
+  }
 }
 
+@media only screen and (max-width: 1200px) {
+  .profile {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .profile {
+    width: 90%;
+    .head {
+      height: 150px;
+      .profile-image {
+        width: 100px;
+        height: 100px;
+        bottom: -50px;
+      }
+    }
+  }
+}
