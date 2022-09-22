@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { FaChevronRight, FaChevronLeft, FaPlus } from 'react-icons/fa';
 import TimelineTask from '../components/TimelineTask';
@@ -12,18 +12,18 @@ const data = [
     starting_time: '2022-09-22 14:00:00',
     deadline: '2022-09-28 14:00:00',
     estimated_duration: 5,
-		actual_duration: 8,
-		status: 1,
+    actual_duration: 8,
+    status: 1
   },
   {
     id: 2,
     description: 'Morbi id finibus augue, nec tristique elit,',
-    category_id:1,
+    category_id: 1,
     starting_time: '2022-010-09 14:00:00',
     deadline: '2022-10-19 14:00:00',
     estimated_duration: 5,
-		actual_duration: 8,
-		status: 2,
+    actual_duration: 8,
+    status: 2
   },
   {
     id: 3,
@@ -32,9 +32,9 @@ const data = [
     starting_time: '2022-09-21 15:00:00',
     deadline: '2022-09-24 15:00:00',
     estimated_duration: 5,
-		actual_duration: 8,
-		status: 3,
-  },
+    actual_duration: 8,
+    status: 3
+  }
 ];
 
 const getDates = (startDate, stopDate) => {
@@ -50,8 +50,7 @@ const getDates = (startDate, stopDate) => {
 const getWeekNumber = (selectedDate = new Date()) => {
   const date = new Date(selectedDate);
   const startDate = new Date(date.getFullYear(), 0, 1);
-  const days = Math.floor((date - startDate)
-        / (24 * 60 * 60 * 1000));
+  const days = Math.floor((date - startDate) / (24 * 60 * 60 * 1000));
 
   return Math.ceil(days / 7);
 };
@@ -64,8 +63,10 @@ const filterTask = (task, startOfWeek, endOfWeek) => {
     return true;
   }
 
-  if (taskStartTime <= startOfWeek
-		&& (taskEndTime >= endOfWeek || taskEndTime >= startOfWeek)) {
+  if (
+    taskStartTime <= startOfWeek &&
+    (taskEndTime >= endOfWeek || taskEndTime >= startOfWeek)
+  ) {
     return true;
   }
 
@@ -73,23 +74,23 @@ const filterTask = (task, startOfWeek, endOfWeek) => {
 };
 
 function TimelineView() {
-  const [startOfWeek, setStartOfWeek] = useState(
-    moment().startOf('isoWeek').toDate(),
-  );
+  const [startOfWeek, setStartOfWeek] = useState(moment().startOf('isoWeek').toDate());
   const endOfWeek = moment(startOfWeek).endOf('isoWeek').toDate();
   const days = getDates(startOfWeek, endOfWeek);
   const tasks = data.filter((task) => filterTask(task, startOfWeek, endOfWeek));
 
   const changeWeek = (previous = false) => {
     if (previous) {
-      const lastDayOfPreviousWeek = moment(
-        startOfWeek,
-      ).subtract(1, 'days').startOf('isoWeek').toDate();
+      const lastDayOfPreviousWeek = moment(startOfWeek)
+        .subtract(1, 'days')
+        .startOf('isoWeek')
+        .toDate();
       setStartOfWeek(lastDayOfPreviousWeek);
     } else {
-      const firstDayOfNextWeek = moment(
-        startOfWeek,
-      ).startOf('isoWeek').add(7, 'days').toDate();
+      const firstDayOfNextWeek = moment(startOfWeek)
+        .startOf('isoWeek')
+        .add(7, 'days')
+        .toDate();
       setStartOfWeek(firstDayOfNextWeek);
     }
   };
@@ -97,9 +98,7 @@ function TimelineView() {
   return (
     <div className="page-container time-line-view">
       <div className="header">
-        <h3>
-          {endOfWeek.toLocaleString('default', { month: 'long', year: 'numeric' })}
-        </h3>
+        <h3>{endOfWeek.toLocaleString('default', { month: 'long', year: 'numeric' })}</h3>
         <div className="buttons">
           <Link to="/task/new" type="button" className="add-btn">
             <FaPlus size={20} />
@@ -110,9 +109,7 @@ function TimelineView() {
         <button type="button" onClick={() => changeWeek(true)}>
           <FaChevronLeft size={16} />
         </button>
-        <span className="week-number">
-          {getWeekNumber(startOfWeek)}
-        </span>
+        <span className="week-number">week {getWeekNumber(startOfWeek)}</span>
         <button type="button" onClick={() => changeWeek()}>
           <FaChevronRight size={16} />
         </button>
@@ -125,7 +122,9 @@ function TimelineView() {
         ))}
       </div>
       <div className="tasksContainer">
-        {days.map((day) => <div className="column" key={day} />)}
+        {days.map((day) => (
+          <div className="column" key={day} />
+        ))}
         <div className="tasks">
           {tasks.map((task) => (
             <TimelineTask

@@ -1,122 +1,123 @@
-@import "../config/config";
+@import '../config/config';
 
-nav{
-	position: absolute;
-	left: 0;
-	top: 0;
-	display: flex;
-	flex-direction: column;
-	width: 15%;
-	min-height: 100vh;
-	background-color: $primary;
-	transition: transform 1s;
-	z-index: $z_index_3;
-	.nav-btn{
-		position: absolute;
-		transform: translateX(38px);
-		top: 20px;
-		right: 0;
-		width:40px;
-		height: 60px;
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+nav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  min-width: 250px;
+  min-height: 100vh;
+  background-color: $primary;
+  transition: transform 1s;
+  z-index: $z_index_3;
+  .nav-btn {
+    position: absolute;
+    transform: translateX(38px);
+    top: 20px;
+    right: 0;
+    width: 40px;
+    height: 60px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-	.nav-profile{
-		padding: 2rem;
-		margin-bottom:5rem;
-		.profile-btn{
-			display: inline-block;
-			min-width: 50px;
-			width: 30%;
-			vertical-align: middle;
-			overflow: hidden;
-			border-radius: 50%;
-			padding:0;
-			img{
-				display: block;
-				width: 100%;
-				border: 1px solid $whiteText;
-				padding: 3px;
-				border-radius: 50%;
-			}
-		}
-		span{
-			vertical-align: middle;
-			margin-left: 1rem;
-		}
-		.options{
-			@include options;
-			background-color: #dfdfdf8f;
-		}
+  .nav-profile {
+    padding: 2rem;
+    margin-bottom: 5rem;
+    .profile-btn {
+      display: inline-block;
+      min-width: 50px;
+      width: 30%;
+      vertical-align: middle;
+      overflow: hidden;
+      border-radius: 50%;
+      padding: 0;
+      img {
+        display: block;
+        width: 100%;
+        border: 1px solid $whiteText;
+        padding: 3px;
+        border-radius: 50%;
+      }
+    }
+    span {
+      vertical-align: middle;
+      margin-left: 1rem;
+    }
+    .options {
+      @include options;
+      background-color: #dfdfdf8f;
+    }
 
-		.hide{
-			transform: translateX(-300px);
-		}
-	}
+    .hide {
+      transform: translateX(-300px);
+    }
+  }
 
-	.links{
-		display: flex;
-		flex-direction: column;
-		gap:0.5rem;
-		padding: 0 2rem;
-		.nav-link{
-			color: $text;
-			width: fit-content;
-			text-decoration: none;
-			text-align: left;
-		}
-		.nav-link:hover{
-			color: $secondary;
-		}
-		.active{
-			color: $secondary;
-			text-decoration: underline;
-		}
-	}
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 2rem;
+    .nav-link {
+      color: $text;
+      width: fit-content;
+      text-decoration: none;
+      text-align: left;
+    }
+    .nav-link:hover {
+      color: $secondary;
+    }
+    .active {
+      color: $secondary;
+      text-decoration: underline;
+    }
+  }
 
-	.sub-title{
-		@include sub-title;
-		border-bottom: 1px solid $text;
-		margin: 1rem 0 2rem 0;
-	}
+  .sub-title {
+    @include sub-title;
+    border-bottom: 1px solid $text;
+    margin: 1rem 0 2rem 0;
+  }
 
-	.footer{
-		justify-self: end;
-		margin-top: auto;
-	}
+  .footer {
+    justify-self: end;
+    margin-top: auto;
+  }
 }
 
-.navbar{
-	transform: translateX(-100%);
+.navbar {
+  transform: translateX(-100%);
 }
 
-@media only screen and (max-width: 1200px){
-	nav{
-		width: 22%;
-	}
+@media only screen and (max-width: 1200px) {
+  nav {
+    width: 22%;
+  }
 }
 
-@media only screen and (max-width: 768px){
-	nav{
-		width: 40%;
-	}
+@media only screen and (max-width: 768px) {
+  nav {
+    width: 40%;
+  }
 }
 
-@media only screen and (max-width: 450px){
-	nav{
-		width: 70%;
-		.nav-btn{
-			transform: translateX(28px);
-			top: 10px;
-			width:30px;
-			height: 40px;
-			*{
-				width: 1rem;
-			}
-		}
-	}
+@media only screen and (max-width: 450px) {
+  nav {
+    width: 70%;
+    .nav-btn {
+      transform: translateX(28px);
+      top: 10px;
+      width: 30px;
+      height: 40px;
+      * {
+        width: 1rem;
+      }
+    }
+  }
 }
