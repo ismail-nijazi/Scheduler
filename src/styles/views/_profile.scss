@@ -1,5 +1,6 @@
 @import '../config/config';
 .profile {
+	@include hideScrollbar;
   position: relative;
   background-color: $whiteText;
   width: 50%;
@@ -23,6 +24,7 @@
     width: 100%;
     .profile-image {
       position: absolute;
+			background: transparent;
       left: 50%;
       transform: translateX(-50%);
       bottom: -70px;
@@ -34,6 +36,10 @@
       img {
         display: block;
         width: 100%;
+				height: 100%;
+				padding: 5px;
+				border: 1px solid $lightGray;
+				object-fit: cover;
         border-radius: 50%;
       }
     }

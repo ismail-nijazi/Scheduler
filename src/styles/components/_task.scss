@@ -9,10 +9,9 @@
   color: $text;
   text-decoration: none;
   .time {
-    color: $text;
     font-size: 0.9rem;
     padding-right: 1rem;
-    color: darken($primary, 10);
+    color: darken($primary, 20);
   }
   .status {
     font-size: 0.9rem;

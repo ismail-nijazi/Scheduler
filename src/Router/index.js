@@ -18,7 +18,7 @@ const AuthRoutes = ()=>{
 }
 
 function RootRoutes() {
-	const [navVisible, setNavVisibility] = useState(false);
+	const [navVisible, setNavVisibility] = useState(true);
 	
 	return (
 		<>

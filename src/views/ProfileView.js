@@ -21,10 +21,11 @@ function ProfileView() {
             <FaTimes size={30} />
           </button>
         </div>
-        <div className="head">
-          <div className="profile-image">
+				<div className="head">
+					<input type="file" name="profie-image" hidden/>
+          <button className="profile-image">
             <img src={require('../assets/images/profile.png')} alt="profile" />
-          </div>
+          </button>
         </div>
         <div className="content">
           <div className="row">

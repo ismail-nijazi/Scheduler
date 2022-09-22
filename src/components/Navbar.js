@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { FaAngleRight, FaAngleLeft } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { FaAngleRight, FaAngleLeft,FaPlus } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import { showProfile } from '../store/slices/profile';
 
@@ -59,11 +59,14 @@ function Navbar({ visible, setVisibility }) {
         </NavLink>
       </div>
 			<div className="links ">
-				<h4 className="sub-title">Projects</h4>
-        <NavLink to="/project/1" className="nav-link">
+				<button className="btn transparent-btn project-btn">
+					<span>Projects</span>
+					<FaPlus className="add-icon" size={15}/>
+				</button>
+        <NavLink to="/project/1" className="nav-link sub-link">
           School
         </NavLink>
-        <NavLink to="/project/2" className="nav-link">
+        <NavLink to="/project/2" className="nav-link sub-link">
           Work
         </NavLink>
 			</div>

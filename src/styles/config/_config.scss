@@ -55,3 +55,11 @@ $z_index_over: 999;
 	background-color: $lightGray;
 	border-radius: 3px;
 }
+
+@mixin hideScrollbar{
+	-ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
