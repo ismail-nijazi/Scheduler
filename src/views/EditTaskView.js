@@ -135,7 +135,7 @@ function EditTaskView() {
               </button>
               {!isNewTask && (
                 <button type="button" className="btn danger-btn">
-                  Cancle
+                  Delete
                 </button>
               )}
             </div>
