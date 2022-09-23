@@ -1,0 +1,37 @@
+@import "../config/config";
+
+.newProject{
+	@include hideScrollbar;
+	@include modalWindow;
+	width: 40%;
+	max-width: 300px;
+	.head{
+		@include windowHeader;
+	}
+	.input{
+		@include input;
+	}
+	
+	.content{
+		width: 90%;
+		margin: 2rem auto;
+		.row {
+      margin-top: 1rem;
+      label,
+      span {
+        margin-right: 1rem;
+      }
+      input {
+        @include input;
+        width: 90%;
+      }
+    }
+	}
+	.footer {
+		margin-top: 5rem;
+		.btn {
+			padding: 5px 2rem;
+			margin-right: 2rem;
+		}
+	}
+}

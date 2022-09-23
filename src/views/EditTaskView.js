@@ -23,7 +23,7 @@ function EditTaskView() {
   const taskStore = useSelector((state) => state.tasks);
 
   return (
-    <div className={'modal'}>
+    <div className='modal'>
       <div className="edit-task">
         <div className="head">
           <span className="title">{isNewTask ? 'Add a new' : 'Update the'} task</span>
@@ -69,7 +69,7 @@ function EditTaskView() {
                 }
                 className="select">
                 <MenuItem sx={styles.menuItem} value={0}>
-                  No Category
+                  No Project
                 </MenuItem>
                 <MenuItem sx={styles.menuItem} value={1}>
                   BTH

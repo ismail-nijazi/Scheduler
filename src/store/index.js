@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import profileReducer from './slices/profile';
+import userReducer from './slices/user';
 import tasksReducer from './slices/tasks';
 
 export default configureStore({
   reducer: {
-		profile: profileReducer,
+		profile: userReducer,
 		tasks: tasksReducer
-  },
+	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+  	serializableCheck: false
+	}),
 });

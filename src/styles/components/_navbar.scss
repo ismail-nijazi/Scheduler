@@ -86,32 +86,46 @@ nav {
 		.sub-link{
 			margin-left: 1rem;
 		}
-  }
-
-	.project-btn{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: nowrap;
-		font-size: 1rem;
-		font-weight: 600;
-		color: $text;
-		padding: 0;
-		margin: 2rem 0 5px 0;
-		.add-icon{
-			display: none;
-		}
-		&:hover{
-			color: $secondary;
+		.project-btn{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: nowrap;
+			font-size: 1rem;
+			font-weight: 600;
+			color: $text;
+			padding: 0;
+			margin: 2rem 0 5px 0;
+			width: 100%;
 			.add-icon{
-				display: block;
+				display: none;
+			}
+			&:hover{
+				color: $secondary;
+				.add-icon{
+					display: block;
+				}
 			}
 		}
-	}
+  }
 
   .footer {
     justify-self: end;
     margin-top: auto;
+
+		.logout{
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			margin-bottom: 1rem;
+			background-color: transparent;
+			font-size: 1.1rem;
+		}
+
+		.logo{
+			background-color: darken($primary, 5);
+			padding: 5px 0;
+		}
   }
 }
 

@@ -1,0 +1,81 @@
+@import "../config/config";
+
+.search-header {
+	padding: 1rem;
+	border-radius: 6px;
+	div {
+		flex-grow: 1;
+		flex-wrap: nowrap;
+	}
+
+	.options-btn{
+		color: $primary;
+		font-size: 1.1rem;
+		background:transparent;
+	}
+
+	.search-bar {
+		display: flex;
+		max-width: 300px;
+		margin-left: 1rem;
+		input {
+			@include input;
+			padding: 8px 10px;
+			width: 100%;
+			min-width: 100px;
+			background-color: $lightGray;
+		}
+	}
+	.options{
+		position: absolute;
+		list-style: none;
+		font-size: 1rem;
+		font-weight: 300;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		background-color: $lightGray;
+		padding: 10px;
+		z-index: $z_index_over;
+		border-radius: 4px;
+	}
+	.add-btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: $whiteText;
+		background-color: $primary;
+		margin-left: 1rem;
+		padding: 6px;
+		border: none;
+		border-radius: 3px;
+		outline: none;
+		cursor: pointer;
+	}
+	.filter {
+		position: relative;
+		margin-top: 1rem;
+		.btn {
+			padding: 0;
+			color: darken($gray, 20);
+			margin-left: auto;
+		}
+		.options {
+			@include options;
+			background-color: $lightGray;
+			-webkit-box-shadow: 7px 8px 14px -8px rgba(0, 0, 0, 0.5);
+			box-shadow: 7px 8px 14px -8px rgba(0, 0, 0, 0.5);
+			position: absolute;
+			top: 2rem;
+			right: -1rem;
+			padding: 1rem;
+			z-index: $z_index_2;
+			.btn {
+				margin: 5px 10px;
+			}
+		}
+		.hide {
+			display: none;
+		}
+	}
+}

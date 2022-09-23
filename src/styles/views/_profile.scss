@@ -62,7 +62,17 @@
         max-width: 300px;
       }
     }
-
+		.btn{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.resest-password{
+			margin-top: 2rem;
+		}
+		.spinner{
+			margin-left: 10px;
+		}
     .footer {
       margin-top: 5rem;
     }

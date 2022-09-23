@@ -5,6 +5,8 @@ import TasksView from '../views/TasksView';
 import EditTasksView from "../views/EditTaskView";
 import AuthView from "../views/AuthView/AuthView";
 import Navbar from '../components/Navbar';
+import NewProjectView from '../views/NewProjectView';
+import ProjectView from '../views/ProjectView';
 
 const AuthRoutes = ()=>{
 	return (
@@ -32,7 +34,9 @@ function RootRoutes() {
 					<Route path="/timeline" element={<TimelineView />} />
 					<Route path="/tasks" element={<TasksView />}/>
 					<Route path="/task/new" element={<EditTasksView />}/>
-					<Route path="/task/:id" element={<EditTasksView />}/>
+					<Route path="/task/:id" element={<EditTasksView />} />
+					<Route path="/project/new" element={<NewProjectView />} />
+					<Route path="/project/:id" element={<ProjectView />}/>
 				</Routes>
 			</div>
 		</>

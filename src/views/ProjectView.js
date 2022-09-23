@@ -1,9 +1,8 @@
-import React,{useState} from 'react'
-import { useDispatch } from 'react-redux';
-import moment from "moment";
+import React, { useState } from 'react';
 import { sortTasks } from '../store/slices/tasks';
-import Task from '../components/Task';
+import moment from "moment";
 import SearchHeader from '../components/SearchHeader';
+import Task from '../components/Task';
 
 const data = [
   {
@@ -38,11 +37,13 @@ const data = [
   },
 ];
 
-function TasksView() {
-	const [tasks, setTasks] = useState(data);
-	const dispatch = useDispatch();
 
-	const onSearch = (searchPhrase) => {
+function ProjectView() {
+	const [tasks, setTasks] = useState(data);
+	const options = ["Edit", "Delete"];
+	
+	const onSearch = (event) => {
+		const searchPhrase = event.target.value.toLowerCase();
 		const filteredTasks = data.filter((task) => {
 			if (
 				task.description.toLowerCase().includes(searchPhrase)
@@ -55,11 +56,19 @@ function TasksView() {
 		setTasks(filteredTasks);
 	}
 
+
 	return (
 		<div className="page-container tasks-view">
 			<SearchHeader
 				onSearch={onSearch}
-				sort={(sortBy) => setTasks(sortTasks(tasks, sortBy))} />
+				sort={(sortBy) => setTasks(sortTasks(tasks, sortBy))}
+				options={
+					options.map((option, index) =>
+						<button type="button" className="btn option" key={index}>
+							{option}
+						</button>)
+				}
+			/>
 			<main>
 				{ tasks.length > 0 ? 
 					tasks.map(task => <Task task={task} key={task.id} />) :
@@ -73,4 +82,4 @@ function TasksView() {
 	)
 }
 
-export default TasksView
+export default ProjectView;

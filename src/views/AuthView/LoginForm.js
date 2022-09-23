@@ -1,11 +1,41 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React,{useState} from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import { login } from "../../store/slices/user";
+import Alert from '@mui/material/Alert';
+import Spinner from '../../components/Spinner';
 
 function LoginForm() {
+	const navigate = useNavigate();
+	const [accountInfo, setAccountinfo] = useState({ email: "", password: "" });
+	const [error, setError] = useState("");
+	const [loading, setLoding] = useState(false);
+	const dispatch = useDispatch();
+
+	const signIn = async () =>{
+		if (!accountInfo.email || !accountInfo.password) {
+			setError("You have to fill all fields!");
+		}
+		else {
+			setLoding(true);
+			try {
+				await login(dispatch, accountInfo);
+				navigate("/");
+			} catch (err) {
+				if (err.code == "auth/wrong-password") {
+					setError("Wrong username or password");
+				}
+			}
+			setLoding(false);
+		}
+	} 
 	return (
 		<div className="window loginForm">
 			<h3 className="title">Log in</h3>
 			<form>
+				<div className="row">
+					{error && <Alert className="col" severity="error">{error}</Alert>}
+				</div>
 				<div className="row">
 					<div className="col">
 						<label htmlFor="email">
@@ -15,7 +45,11 @@ function LoginForm() {
 							type="email"
 							name="email"
 							id="email"
-							placeholder="ismail@gmail.com"
+							value={accountInfo.email}
+							onChange={(event) => setAccountinfo({
+								...accountInfo, email: event.target.value
+							})}
+							placeholder="example@mail.com"
 						/>
 					</div>
 				</div>
@@ -28,6 +62,10 @@ function LoginForm() {
 							type="password"
 							name="password"
 							id="password"
+							value={accountInfo.password}
+							onChange={(event) => setAccountinfo({
+								...accountInfo, password: event.target.value
+							})}
 							placeholder="password"
 						/>
 					</div>
@@ -36,7 +74,11 @@ function LoginForm() {
 					<div className="col">
 						<button
 							type="button"
-							className="btn primary-btn">Login</button>
+							className="btn primary-btn"
+							onClick={signIn}
+						>
+							Login	{loading && <Spinner className="spinner-small"/>}
+						</button>
 					</div>
 				</div>
 			</form>
@@ -46,10 +88,10 @@ function LoginForm() {
 				</Link>
 			</div>
 			<div className="row">
-				<p>
+				<span>
 					{"Don't have an account? "}
-					<Link to="/sign_up" className="btn link">Sign up</Link>
-				</p>
+					<Link to="/sign_up" className="link">Sign up</Link>
+				</span>
 			</div>
 		</div>
 	)

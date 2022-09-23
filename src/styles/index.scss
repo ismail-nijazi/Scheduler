@@ -1,10 +1,13 @@
 @use "./components/navbar";
 @use "./components/task";
+@use "./components/searchHeader";
+@use "./components/spinner";
 @use "./views/timeLineView";
 @use "./views/profile";
 @use "./views/tasksView";
 @use "./views/editTaskView";
 @use "./views/authView";
+@use "./views/newProject";
 @import "./config/config";
 @import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
 
@@ -40,6 +43,7 @@
 		align-items: center;
 		height: 100%;
 	}
+
 }
 
 .logo{
