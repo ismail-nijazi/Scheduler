@@ -8,7 +8,7 @@ import Navbar from '../components/Navbar';
 import NewProjectView from '../views/NewProjectView';
 import ProjectView from '../views/ProjectView';
 
-const AuthRoutes = ()=>{
+const AuthRoutes = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Navigate to="/login" />} />
@@ -35,8 +35,10 @@ function RootRoutes() {
 					<Route path="/tasks" element={<TasksView />}/>
 					<Route path="/task/new" element={<EditTasksView />}/>
 					<Route path="/task/:id" element={<EditTasksView />} />
+					<Route path="/project/new-task" element={<EditTasksView project/>} />
 					<Route path="/project/new" element={<NewProjectView />} />
-					<Route path="/project/:id" element={<ProjectView />}/>
+					<Route path="/project/edit" element={<NewProjectView />} />
+					<Route path="/project/:id" element={<ProjectView />} />
 				</Routes>
 			</div>
 		</>

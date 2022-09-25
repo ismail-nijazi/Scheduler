@@ -124,6 +124,12 @@
 	color: darken($gray,10);
 }
 
+.warning{
+	display: block;
+	color: #da913d;
+	padding: 10px 0;
+}
+
 
 @media only screen and (max-width: 768px){
 	.App{

@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { SORTING_OPTIONS } from "../store/slices/tasks";
 
-function SearchHeader({ onSearch, sort, options }) {
+function SearchHeader({ title ,onSearch, sort, options,newTaskRoute }) {
 	const [search, setSearch] = useState("");
 	const [sortOptions, showSortOptions] = useState(false);
 	const [optionsVisibility, showOptions] = useState(false);
@@ -22,15 +22,14 @@ function SearchHeader({ onSearch, sort, options }) {
 		<header className="search-header">
 			<div className="row">
 				<div>
-					<h3 className="title">TASKS {
-							options &&
-							<button
-								className="btn options-btn"
-								onClick={() => showOptions(!optionsVisibility)}>
-								<FaEllipsisV />
-							</button>
-						}
-						
+					<h3 className="title"> {title.toUpperCase()}{
+						options &&
+						<button
+							className="btn options-btn"
+							onClick={() => showOptions(!optionsVisibility)}>
+							<FaEllipsisV />
+						</button>
+					}
 						{optionsVisibility && <div className="options">{options}</div>}
 					</h3>
 				</div>
@@ -45,7 +44,7 @@ function SearchHeader({ onSearch, sort, options }) {
 						placeholder="search"
 					/>
 					<Link
-						to="/task/new"
+						to={newTaskRoute}
 						className="add-btn" 
 					>
 						<FaPlus size={20} />

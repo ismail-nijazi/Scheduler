@@ -32,6 +32,10 @@
 		.btn {
 			padding: 5px 2rem;
 			margin-right: 2rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
 		}
 	}
 }

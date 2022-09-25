@@ -1,29 +1,79 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { TextField, Select, MenuItem } from '@mui/material';
+import { TextField, Select, MenuItem,Alert} from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/config/material_ui';
 import moment from 'moment';
+import { createTask, getTasks } from '../store/slices/tasks';
+import PopupQuestion from '../components/PopupQuestion';
+import { tasks } from '../services/database';
+import Spinner from '../components/Spinner';
 
 const INITIAL_TASK = {
   description: '',
-  category_id: 0,
+  project: "No Project",
   starting_time: new moment(),
   deadline: new moment(),
-  estimated_duration: 1
+	estimated_duration: 1,
+	status: 0,
 };
 
-function EditTaskView() {
+function EditTaskView({project}) {	
+	const taskStore = useSelector((state) => state.tasks);
   const navigate = useNavigate();
   const isNewTask = useLocation().pathname.includes('new');
-  const task = useSelector((state) => state.tasks.selectedTask);
-  const [newTask, setTask] = useState(isNewTask ? INITIAL_TASK : task);
-  const taskStore = useSelector((state) => state.tasks);
+	const [error, setError] = useState("");
+	const [newTask, setTask] = useState(
+		isNewTask ? INITIAL_TASK : taskStore.selectedTask
+	);
+	const [confirmation, showConfirmation] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (isNewTask && project) {
+			setTask({ ...newTask, project: taskStore.tasksPerProject.project.id });
+		}
+	}, []);
+	
+	const validateTask = () => {
+		if (!newTask.description) {
+			setError("You have to add a description!");
+			return false;
+		}
+		else if (newTask.deadline <= newTask.starting_time) {
+			setError("The deadline should be after starting time!");
+			return false;
+		}
+		return true;
+	}
+
+	const submit = async () => {
+		if (validateTask()) {
+			setLoading(true);
+			await createTask(dispatch, newTask);
+			setLoading(false);
+			navigate(-1);
+		}
+	}
 
   return (
-    <div className='modal'>
+		<div className='modal'>
+			<PopupQuestion
+				title={"Delete task"}
+				text="Are you sure you want to delet this task?"
+				visible={confirmation}
+				onClose={() => showConfirmation(false)}
+				confirm={async () => {
+					await tasks.remove(taskStore.selectedTask.id);
+					getTasks(dispatch);
+					navigate(-1);
+					}
+				}
+				cancle={() => showConfirmation(false)}
+			/>
       <div className="edit-task">
         <div className="head">
           <span className="title">{isNewTask ? 'Add a new' : 'Update the'} task</span>
@@ -34,7 +84,10 @@ function EditTaskView() {
             <FaTimes size={26} />
           </button>
         </div>
-        <div className="content">
+				<div className="content">
+					<div className="row">
+						{error && <Alert className="col" severity="error">{error}</Alert>}
+					</div>
           <div className="row">
             <div className="col">
               <label htmlFor="description">Description</label>
@@ -59,24 +112,27 @@ function EditTaskView() {
               <Select
                 labelId="task-category"
                 id="task-category-select"
-                value={newTask.category_id}
+                value={newTask.project || "No Project"}
                 label="Project"
                 onChange={(event) =>
                   setTask({
                     ...newTask,
-                    category_id: event.target.value
+                    project: event.target.value
                   })
                 }
                 className="select">
-                <MenuItem sx={styles.menuItem} value={0}>
+                <MenuItem sx={styles.menuItem} value={"No Project"}>
                   No Project
                 </MenuItem>
-                <MenuItem sx={styles.menuItem} value={1}>
-                  BTH
-                </MenuItem>
-                <MenuItem sx={styles.menuItem} value={2}>
-                  Work
-                </MenuItem>
+								{taskStore.usersProjects.map((project) =>
+									<MenuItem
+										sx={styles.menuItem}
+										value={project.id}
+										key={project.id}
+									>
+										{project.name}
+									</MenuItem>
+								)}
               </Select>
             </div>
           </div>
@@ -130,15 +186,25 @@ function EditTaskView() {
           </div>
           <div className="row footer">
             <div className="col">
-              <button type="button" className="btn primary-btn">
-                {isNewTask ? 'Add' : 'Update'}
+							<button
+								type="button"
+								className="btn primary-btn"
+								onClick={submit}
+							>
+								{isNewTask ? 'Add' : 'Update'}
+								{loading && <Spinner className="spinner-small"/>}
               </button>
-              {!isNewTask && (
-                <button type="button" className="btn danger-btn">
+						</div>
+						<div className="col">
+							{!isNewTask && (
+								<button
+									type="button"
+									onClick={()=>showConfirmation(true)}
+									className="btn danger-btn">
                   Delete
                 </button>
               )}
-            </div>
+						</div>
           </div>
         </div>
       </div>

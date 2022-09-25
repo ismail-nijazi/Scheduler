@@ -1,17 +1,31 @@
 import React from 'react';
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { setSelectedTask } from '../store/slices/tasks';
-import { getStatus } from "./TimelineTask";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedTask, 
+	getStatus, 
+	getTasksPerProject,
+	STATUSES,
+	createTask
+} from '../store/slices/tasks';
 
 const OPTION_DATE = {
 	dateStyle: "medium"
 };
 
 function Task({ task }) {
+	const tasksStore = useSelector(state => state.tasks);
 	const status = getStatus(task.status);
 	const dispatch = useDispatch();
+	const setAsCompeletd = () => {
+		createTask(dispatch, {
+			...task,
+			status: STATUSES.COMPELTED.value,
+		});
+		if (tasksStore.tasksPerProject?.project) {
+			getTasksPerProject(dispatch, tasksStore.tasksPerProject?.project);
+		}
+	}
 
 	return (
 		<div
@@ -36,6 +50,8 @@ function Task({ task }) {
 					{
 						task.status !== 2 &&
 						<button
+								type='button'
+								onClick={setAsCompeletd}
 							className='btn transparent-btn'
 						>
 							<FaCheck size={20}/>

@@ -1,17 +1,22 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
-import { showProfile } from '../store/slices/user';
+import { showProfile,deleteAccount, updateUserProfile } from '../store/slices/user';
 import {
   updatePassword,
   reauthenticateWithCredential,
-  EmailAuthProvider,
+	EmailAuthProvider,
 } from 'firebase/auth';
 import { auth } from "../firebase";
-import Alert from '@mui/material/Alert';
+import {
+	Alert,
+} from "@mui/material";
 import Spinner from "../components/Spinner";
+import PopupQuestion from '../components/PopupQuestion';
 
 function ProfileView() {
+	const navigate = useNavigate();
 	const profile = useSelector((state) => state.profile);
 	const [accountInfo, setAccountInfo] = useState({
 		email: profile.user.email,
@@ -23,6 +28,7 @@ function ProfileView() {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [confirmation, showConfirm] = useState(false);
 	const dispatch = useDispatch();
 
 	const validtatePassword = () => {
@@ -35,17 +41,11 @@ function ProfileView() {
 			setError("Passwords are not matched!");
 			return false;
 		}
-
 		return true;
 	}
 	
 	const resetPassword = async () => {
-		if (!resetPasswordForm) {
-			setPasswordForm(true);
-			return;
-		}
 		if (validtatePassword()) {
-			setLoading(true);
 			try {
 				const credential = EmailAuthProvider.credential(
 					profile.user.email,
@@ -60,15 +60,47 @@ function ProfileView() {
 				if (err.code == "auth/wrong-password") {
 					setError("The old password is not currect!");
 				}
-			}
-			finally {
-				setLoading(false);
+				else if (err.code == "auth/weak-password") {
+					setError("The password is too weak.");
+				}
+				throw err;
 			}
 		}
 	}
 
+	const updateProfile = async () => {
+		try {
+			setLoading(true);
+			if (resetPasswordForm) {
+				await resetPassword();
+			}
+			await updateUserProfile(dispatch, {
+				email: accountInfo.email,
+			});
+			setSuccess("Your profile was updated successfully!");
+		} catch (err){
+			if (err.code == "auth/email-already-in-use") {
+				setError("The email address is already in use");
+			}
+		} finally {
+			setLoading(false);
+		}
+	}
+
   return (
-    <div className={profile.visible ? 'modal' : 'modal hidden'}>
+		<div className={profile.visible ? 'modal' : 'modal hidden'}>
+			<PopupQuestion
+				title={"Delete Account"}
+				text="Are you sure you want to delet your account?"
+				visible={confirmation}
+				onClose={() => showConfirm(false)}
+				confirm={async () => {
+						await deleteAccount(dispatch);
+						navigate("/")
+					}
+				}
+				cancle={() => showConfirm(false)}
+			/>
       <div className="profile">
         <div
           className="row close-btn"
@@ -98,17 +130,6 @@ function ProfileView() {
 					</div>
           <div className="row">
             <div className="col">
-              <label htmlFor="username">
-                Username
-              </label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                placeholder="example@mail.com"
-              />
-            </div>
-            <div className="col">
               <label htmlFor="email">
                 Email
               </label>
@@ -125,7 +146,7 @@ function ProfileView() {
             </div>
 					</div>
 					{resetPasswordForm &&
-						<div className="row resest-password">
+						<div className="resest-password">
 							<div className="col">
 								<span htmlFor="oldPassword">
 									Old password
@@ -144,25 +165,26 @@ function ProfileView() {
 									placeholder="Old password"
 								/>
 							</div>
-							<div className="col">
-								<span htmlFor="newPassowrd">
-									new Password
-								</span>
-								<input
-									type="password"
-									name="new-password"
-									id="newPassowrd"
-									value={accountInfo.newPassowrd}
-									onChange={event => setAccountInfo(
-										{
-											...accountInfo,
-											newPassowrd: event.target.value
-										})
-									}
-									placeholder="New password"
-								/>
-							</div>
 							<div className="row">
+								<div className="col">
+									<span htmlFor="newPassowrd">
+										new Password
+									</span>
+									<input
+										type="password"
+										name="new-password"
+										id="newPassowrd"
+										value={accountInfo.newPassowrd}
+										onChange={event => setAccountInfo(
+											{
+												...accountInfo,
+												newPassowrd: event.target.value
+											})
+										}
+										placeholder="New password"
+									/>
+								</div>
+								<div className="col">
 									<span htmlFor="repeatPass">
 										Repeat password
 									</span>
@@ -175,26 +197,38 @@ function ProfileView() {
 										}
 										placeholder="Repeat password"
 									/>
+								</div>
 							</div>
 						</div>
 					}
-          <div className="row">
-            <div className="col">
-							<button
+					<div className="row">
+							<div className="col">
+								<button
+									type="button"
+									className="btn primary-btn"
+									onClick={()=> setPasswordForm(!resetPasswordForm)}
+								>
+									{ !resetPasswordForm ? "Reset Password" : "Cancel"}
+								</button>
+							</div>
+						</div>
+					
+					<div className="footer">
+						<button
 								type="button"
 								className="btn primary-btn"
-								onClick={(resetPassword)}
+								onClick={updateProfile}
 							>
-								{resetPasswordForm ? "Update" : "Reset"} Password
+								Update profile
 								{loading && <Spinner className="spinner-small"/>}
-							</button>
-            </div>
-          </div>
-
-          <div className="row footer">
-            <div className="col">
-              <button type="button" className="btn danger-btn">Delete account</button>
-            </div>
+						</button>
+						<button
+								type="button"
+								className="btn danger-btn"
+								onClick={() => showConfirm(true)}
+							>
+								Delete account
+						</button>
           </div>
         </div>
       </div>

@@ -22,7 +22,8 @@ function LoginForm() {
 				await login(dispatch, accountInfo);
 				navigate("/");
 			} catch (err) {
-				if (err.code == "auth/wrong-password") {
+				if (err.code == "auth/wrong-password"
+					|| err.code == "auth/user-not-found") {
 					setError("Wrong username or password");
 				}
 			}

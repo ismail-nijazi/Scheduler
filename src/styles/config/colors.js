@@ -17,5 +17,6 @@ export const statusColors = {
 	NOT_STARTED: "#eba86a",
 	ON_GOING: "#73bab2",
 	COMPELTED: "#4da358",
-	CANCELED: "#d46161",
+	CANCELED: "#F2B0A2",
+	EXPIRED: "#F55B3B",
 }

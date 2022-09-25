@@ -51,17 +51,21 @@
     margin: 100px auto 10px auto;
     .row {
       margin-top: 1rem;
-      label,
-      span {
-        display: block;
-        margin-bottom: 6px;
-      }
-      input {
-        @include input;
-        width: 90%;
-        max-width: 300px;
-      }
     }
+		.col{
+			margin-right: 1rem;
+			max-width: 50%;
+		}
+		label,
+    span {
+			display: block;
+			margin-bottom: 6px;
+		}
+		input {
+			@include input;
+			width: 100%;
+			margin-right: 1rem;
+		}
 		.btn{
 			display: flex;
 			justify-content: center;
@@ -75,6 +79,8 @@
 		}
     .footer {
       margin-top: 5rem;
+			display: flex;
+			gap: 1rem;
     }
   }
 }

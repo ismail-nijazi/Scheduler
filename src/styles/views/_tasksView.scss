@@ -7,6 +7,9 @@
 		color: lighten($text, 30);
 		background: transparent;
 		text-align: left;
+		&:hover{
+			color: $secondary;
+		}
 	}
   main {
     position: relative;

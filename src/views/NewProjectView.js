@@ -1,16 +1,50 @@
 import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from "react-icons/fa";
+import { projects } from '../services/database';
+import { auth } from '../firebase';
+import Spinner from '../components/Spinner';
+import { getProjects, setTasksPerProject } from '../store/slices/tasks';
 
 function NewProjectView() {
 	const navigate = useNavigate();
-	const [title, setTitle] = useState("");
+	const tasksStore = useSelector(state => state.tasks);
+	const selectedProject = tasksStore.tasksPerProject.project;
+	const isNewProject = useLocation().pathname.includes('new');
+	const [title, setTitle] = useState(
+		isNewProject ? "" : selectedProject.name);
+	const [loading, setLoading] = useState(false);
+	const dispatch = useDispatch();
+
+	const createProject = async () => {
+		setLoading(true);
+		if (isNewProject) {
+			await projects.create({
+				name: title,
+				user: auth.currentUser.uid
+			});
+		} else {
+			await projects.create({
+				name: title,
+				user: auth.currentUser.uid
+			}, selectedProject.id);
+			dispatch(setTasksPerProject({
+				...tasksStore.tasksPerProject,
+				project: {...selectedProject, name: title}
+			}));
+		}
+
+		setLoading(false);
+		navigate(-1);
+		getProjects(dispatch);					
+	}
 
 	return (
 		<div className='modal'>
       <div className="newProject">
         <div className="head">
-          <span className="title">Add a new project</span>
+          <span className="title">{isNewProject ? "Add a new " : "Update "} project</span>
           <button
             type="button"
             className="btn transparent-btn close-btn"
@@ -34,8 +68,13 @@ function NewProjectView() {
 					</div>
 					<div className="row footer">
 						<div className="col">
-							<button type="button" className="btn primary-btn">
-								Add
+							<button
+								type="button"
+								className="btn primary-btn"
+								onClick={createProject}
+							>
+								{isNewProject ? "Add":"Update"}
+								{loading && <Spinner className="spinner-small"/>}
 							</button>
 						</div>
 					</div>

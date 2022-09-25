@@ -1,8 +1,87 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { projects, tasks } from '../../services/database';
+import { auth } from '../../firebase';
+import { Timestamp } from 'firebase/firestore';
+import tasksColors ,{ statusColors } from '../../styles/config/colors';
+import moment from 'moment';
+
+export const STATUSES = {
+	NOT_STARTED: {
+		value: 0,
+		text: "Not Started",
+	},
+	ON_GOING: {
+		value: 1,
+		text: "On Going",
+	},
+	COMPELTED:  {
+		value: 2,
+		text: "Compeleted",
+	},
+	CANCELED:  {
+		value: 3,
+		text: "Canceled",
+	},
+	EXPIRED: {
+		value: 4,
+		text: "Expired",
+	}
+}
+
+export const getStatus = (status) => {
+	switch (status) {
+		case STATUSES.NOT_STARTED.value:
+			return {
+				color: statusColors.NOT_STARTED,
+				text: STATUSES.NOT_STARTED.text,
+			};
+		case STATUSES.ON_GOING.value:
+			return {
+				color: statusColors.ON_GOING,
+				text: STATUSES.ON_GOING.text,
+			};
+		case STATUSES.COMPELTED.value:
+			return {
+				color: statusColors.COMPELTED,
+				text: STATUSES.COMPELTED.text,
+			};
+		case STATUSES.CANCELED.value:
+			return {
+				color: statusColors.CANCELED,
+				text: STATUSES.CANCELED.text,
+			};
+		case STATUSES.EXPIRED.value:
+			return {
+				color: statusColors.EXPIRED,
+				text: STATUSES.EXPIRED.text,
+			};
+		default:
+			return {
+				color: statusColors.NOT_STARTED,
+				text: STATUSES.NOT_STARTED.text,
+			};;
+	}
+}
+
+const generateRandomColor = () => {
+	const colorIndex = Math.floor(Math.random() * tasksColors.length);
+	return tasksColors[colorIndex];
+};
+
+export const SELECTED_PROJECT_KEY = "scheduler-selected-project";
 
 const initialState = {
 	newTaskPage: false,
-	selectedTask: {}
+	selectedWeek: moment().startOf('isoWeek').toDate(),
+	selectedTask: null,
+	usersProjects:[],
+	tasks: [],
+	tasksPerProject: {
+		project: null,
+		tasks: [],
+	},
+	loading: false,
+	statuses:[],
 };
 
 const tasksSlice = createSlice({
@@ -12,16 +91,67 @@ const tasksSlice = createSlice({
     showNewTaskPage: (state, action) => {
       state.newTaskPage = action.payload;
 		},
-		setSelectedTask(state, action) {
+		setSelectedTask: (state, action)=>{
 			state.selectedTask = action.payload;
+		},
+		setTasks: (state, action) => {
+			state.tasks = action.payload;
+		},
+		setTasksPerProject: (state, action) => {
+			state.tasksPerProject = action.payload;
+		},
+		setLoading: (state, action) => {
+			state.loading = action.payload;
+		},
+		setProjects: (state, action)=> {
+			state.usersProjects = action.payload;
+		},
+		setSelectedWeek: (state, action)=>{
+			state.selectedWeek = action.payload;
+		},
+		setStatuses: (state, action) => {
+			state.statuses = action.payload;
 		}
   },
 });
 
 export const {
 	showNewTaskPage,
-	setSelectedTask
+	setSelectedTask,
+	setTasksPerProject,
+	setSelectedWeek,
+	setStatuses
 } = tasksSlice.actions;
+
+export const formatTask = (task) => {
+	const taskStartTime = new moment(task.starting_time.toDate());
+	const taskDeadline = new moment(task.deadline.toDate());
+	const now = new moment();
+	let status = task.status;
+
+	if (task.status !== STATUSES.EXPIRED.value &&
+		task.status !== STATUSES.CANCELED.value &&
+		task.status !== STATUSES.COMPELTED.value) {
+		if ( now >= taskStartTime && now <= taskDeadline) {
+			status = STATUSES.ON_GOING.value;
+		}
+		else if (now > taskDeadline && task.status !== STATUSES.COMPELTED.value) {
+			status = STATUSES.EXPIRED.value;
+		}
+		else if(now < taskStartTime){
+			status = STATUSES.NOT_STARTED.value;
+		}
+	}
+
+
+	return {
+		...task,
+		starting_time: taskStartTime,
+		deadline: taskDeadline,
+		status: status,
+		color: generateRandomColor(),
+	}
+}
 
 export const SORTING_OPTIONS = {
 	STARTING_DATE: 0,
@@ -50,6 +180,49 @@ export const sortTasks = (sortBy, tasks) => {
 	}
 	
 	return tasksCopy;
+}
+
+export const getTasks = async (dispatch) => {
+	dispatch(tasksSlice.actions.setLoading(true));
+	const fetchedTasks = await tasks.getUsersData();
+	const formatedTasks = fetchedTasks.map(task => formatTask(task));
+	dispatch(tasksSlice.actions.setTasks(formatedTasks));
+	dispatch(tasksSlice.actions.setLoading(false));
+}
+
+export const createTask = async (dispatch, data) => {
+	const startingDate = Timestamp.fromDate(data.starting_time.toDate());
+	const deadline = Timestamp.fromDate(data.deadline.toDate());
+	const newTasks = {
+		...data,
+		user: auth.currentUser.uid,
+		starting_time: startingDate,
+		deadline: deadline
+	}
+	if (data.id) {
+		await tasks.create(newTasks, data.id);
+	} else {
+		await tasks.create(newTasks);
+	}
+	getTasks(dispatch);
+}
+
+export const getTasksPerProject = async (dispatch, project) => {
+	dispatch(tasksSlice.actions.setLoading(true));
+	const userTasks = await tasks.getTasksPerProject(project.id);
+	dispatch(tasksSlice.actions.setTasksPerProject({
+		project: project,
+		tasks: userTasks.map(task => formatTask(task)),
+	}));
+	localStorage.setItem(SELECTED_PROJECT_KEY, JSON.stringify(project));
+	dispatch(tasksSlice.actions.setLoading(false));
+}
+
+export const getProjects = async (dispatch) => {
+	dispatch(tasksSlice.actions.setLoading(true));
+	const usersProjects = await projects.getUsersData();
+	dispatch(tasksSlice.actions.setProjects(usersProjects));
+	dispatch(tasksSlice.actions.setLoading(false));
 }
 
 export default tasksSlice.reducer;

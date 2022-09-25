@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import {
 	FaAngleRight,
 	FaAngleLeft,
@@ -10,11 +10,12 @@ import { signOut } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from "../firebase";
 import { setLogin, showProfile } from '../store/slices/user';
-import { useSelector } from "react-redux";
+import { getTasksPerProject } from '../store/slices/tasks';
 
 function Navbar({ visible, setVisibility }) {
 	const [optionsVisible, showOptions] = useState(false);
-	const profile = useSelector(state => state.profile)
+	const profile = useSelector(state => state.profile);
+	const tasksStore = useSelector(state => state.tasks);
 	const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -73,12 +74,18 @@ function Navbar({ visible, setVisibility }) {
 					<span>Projects</span>
 					<FaPlus className="add-icon" size={15}/>
 				</NavLink>
-        <NavLink to="/project/1" className="nav-link sub-link">
-          School
-        </NavLink>
-        <NavLink to="/project/2" className="nav-link sub-link">
-          Work
-        </NavLink>
+				{
+					tasksStore.usersProjects?.map(project => 
+						<NavLink
+							to={`/project/${project.id}`}
+							onClick={() => getTasksPerProject(dispatch ,project)}
+							className="nav-link sub-link"
+							key={project.id}
+						>
+						{project.name}
+						</NavLink>
+					)
+				}
 			</div>
 			<div className="footer">
 				<div className="links">
