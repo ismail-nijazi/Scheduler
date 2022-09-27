@@ -27,22 +27,22 @@ nav {
   }
 
   .nav-profile {
-    padding: 2rem;
-    margin-bottom: 5rem;
+    padding: 1rem;
+    margin-bottom: 3rem;
     .profile-btn {
       display: block;
       min-width: 50px;
       width: 70px;
-			height: 70px;
+      height: 70px;
       overflow: hidden;
       border-radius: 50%;
       padding: 0;
-			margin: auto;
+      margin: auto;
       img {
         display: block;
         width: 100%;
-				height: 100%;
-				object-fit:cover;
+        height: 100%;
+        object-fit: cover;
         border: 1px solid $whiteText;
         padding: 3px;
         border-radius: 50%;
@@ -51,8 +51,8 @@ nav {
     span {
       display: block;
       margin: auto;
-			text-align: center;
-			padding: 10px 0;
+      text-align: center;
+      padding: 10px 0;
     }
     .options {
       @include options;
@@ -83,49 +83,49 @@ nav {
       text-decoration: underline;
     }
 
-		.sub-link{
-			margin-left: 1rem;
-		}
-		.project-btn{
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			flex-wrap: nowrap;
-			font-size: 1rem;
-			font-weight: 600;
-			color: $text;
-			padding: 0;
-			margin: 2rem 0 5px 0;
-			width: 100%;
-			.add-icon{
-				display: none;
-			}
-			&:hover{
-				color: $secondary;
-				.add-icon{
-					display: block;
-				}
-			}
-		}
+    .sub-link {
+      margin-left: 1rem;
+    }
+    .project-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      font-size: 1rem;
+      font-weight: 600;
+      color: $text;
+      padding: 0;
+      margin: 2rem 0 5px 0;
+      width: 100%;
+      .add-icon {
+        display: none;
+      }
+      &:hover {
+        color: $secondary;
+        .add-icon {
+          display: block;
+        }
+      }
+    }
   }
 
   .footer {
     justify-self: end;
     margin-top: auto;
 
-		.logout{
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-			margin-bottom: 1rem;
-			background-color: transparent;
-			font-size: 1.1rem;
-		}
+    .logout {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      background-color: transparent;
+      font-size: 1.1rem;
+    }
 
-		.logo{
-			background-color: darken($primary, 5);
-			padding: 5px 0;
-		}
+    .logo {
+      background-color: darken($primary, 5);
+      padding: 5px 0;
+    }
   }
 }
 
