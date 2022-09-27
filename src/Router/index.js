@@ -11,10 +11,10 @@ import ProjectView from '../views/ProjectView';
 const AuthRoutes = () => {
 	return (
 		<Routes>
-			<Route path="/" element={<Navigate to="/login" />} />
 			<Route path="/login" element={<AuthView />} />
 			<Route path="/sign_up" element={<AuthView />} />
 			<Route path="/reset_password" element={<AuthView />} />
+			<Route path="*" element={<AuthView />} />
 		</Routes>
 	);
 }
@@ -39,6 +39,7 @@ function RootRoutes() {
 					<Route path="/project/new" element={<NewProjectView />} />
 					<Route path="/project/edit" element={<NewProjectView />} />
 					<Route path="/project/:id" element={<ProjectView />} />
+					<Route path="*" element={<TimelineView />} />
 				</Routes>
 			</div>
 		</>

@@ -43,7 +43,21 @@
 		align-items: center;
 		height: 100%;
 	}
-
+	.status {
+    font-size: 0.9rem;
+    display: inline-block;
+    .status-indicator {
+      display: inline-block;
+      vertical-align: middle;
+      width: 0.9rem;
+      height: 0.9rem;
+      border-radius: 50%;
+    }
+    .status-text {
+			display: inline;
+      margin-right: 5px;
+    }
+  }
 }
 
 .logo{
@@ -109,7 +123,6 @@
 .sucess-btn{
 	background-color: #48c044 !important;
 }
-
 
 .primary-btn{
 	background-color: $primary !important;

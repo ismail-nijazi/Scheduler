@@ -8,7 +8,6 @@ import SignUpForm from "./SignUpForm";
 function AuthView() {
 	const pathName = useLocation().pathname;
 	
-
 	const renderWindow = () => {
 		if (pathName.includes("sign_up")) {
 			return <SignUpForm />;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -15,21 +15,10 @@ import {
 	setStatuses
 } from './store/slices/tasks';
 import { status } from './services/database';
-import { useNavigate } from 'react-router-dom';
 
 function App() {
 	const profile = useSelector(state => state.profile);
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		if (auth.currentUser) {
-			navigate("/");
-		} else {
-			navigate("/login");
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [auth.currentUser]);
 
 	auth.onAuthStateChanged(function (user) {
 		if (user) {

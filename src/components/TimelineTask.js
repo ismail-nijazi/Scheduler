@@ -11,7 +11,8 @@ const OPTION_HOUR_MINUT = {
 
 function TimelineTask({ task, startOfWeek }) {
 	const dispatch = useDispatch();
-
+	const diff = Math.floor(Math.abs(task.deadline - task.starting_time) / 3600000);
+	
   const getTaskStyle = () => {
     const taskStartTime = new Date(task.starting_time);
     const taskDeadline = new Date(task.deadline);
@@ -35,7 +36,8 @@ function TimelineTask({ task, startOfWeek }) {
       backgroundColor: task.color,
 		};
 		
-  };
+	};
+
 
   return (
 		<Link
@@ -45,18 +47,21 @@ function TimelineTask({ task, startOfWeek }) {
 			key={task.id}
 			onClick={() => dispatch(setSelectedTask(task))}
 		>
-			<div className='row'>
-				<div className='col'>
-					<span className="time">
-					{new Date(task.starting_time).toLocaleString(
-						"en-US", OPTION_HOUR_MINUT)}
-					</span>
+			{diff > 12 ? <>
+				<div className='row'>
+					<div className='col'>
+						<span className="time">
+						{new Date(task.starting_time).toLocaleString(
+							"en-US", OPTION_HOUR_MINUT)}
+						</span>
+					</div>
 				</div>
-			</div>
-      <h5 className="text">
-        {task.description.slice(0, 15)}
-        ...
-      </h5>
+				<h5 className="text">
+					{task.description.slice(0, 15)}
+					...
+				</h5>
+			</> :
+			<div className="row" style={{height: 50}}></div>}
     </Link>
   );
 }

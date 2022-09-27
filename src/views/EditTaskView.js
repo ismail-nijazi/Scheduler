@@ -3,10 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { TextField, Select, MenuItem,Alert} from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes,FaTrashAlt,FaCheck } from 'react-icons/fa';
 import styles from '../styles/config/material_ui';
 import moment from 'moment';
-import { createTask, getTasks } from '../store/slices/tasks';
+import {
+	createTask, 
+	getStatus, 
+	getTasks, 
+	getTasksPerProject, 
+	setTheTaskCompeleted, 
+	STATUSES} from '../store/slices/tasks';
 import PopupQuestion from '../components/PopupQuestion';
 import { tasks } from '../services/database';
 import Spinner from '../components/Spinner';
@@ -31,12 +37,22 @@ function EditTaskView({project}) {
 	const [confirmation, showConfirmation] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
+	const status = getStatus(newTask.status);
 
 	useEffect(() => {
 		if (isNewTask && project) {
 			setTask({ ...newTask, project: taskStore.tasksPerProject.project.id });
 		}
 	}, []);
+
+	const setAsCompeletd = () => {
+		setTheTaskCompeleted(dispatch, newTask).then(() => setTask(
+			{ ...newTask, status: STATUSES.COMPELTED.value })
+		);
+		if (taskStore.tasksPerProject?.project) {
+			getTasksPerProject(dispatch, taskStore.tasksPerProject?.project);
+		}
+	}
 	
 	const validateTask = () => {
 		if (!newTask.description) {
@@ -68,23 +84,53 @@ function EditTaskView({project}) {
 				onClose={() => showConfirmation(false)}
 				confirm={async () => {
 					await tasks.remove(taskStore.selectedTask.id);
-					getTasks(dispatch);
-					navigate(-1);
+						getTasks(dispatch);
+						navigate(-1);
 					}
 				}
 				cancle={() => showConfirmation(false)}
 			/>
       <div className="edit-task">
         <div className="head">
-          <span className="title">{isNewTask ? 'Add a new' : 'Update the'} task</span>
-          <button
-            type="button"
-            className="btn transparent-btn close-btn"
-            onClick={() => navigate(-1)}>
-            <FaTimes size={26} />
+					<span
+						className="title">{isNewTask ? 'Add a new' : 'Update the'}
+						task
+					</span>
+					<div>
+						<button
+							type='button'
+							onClick={setAsCompeletd}
+							className='btn transparent-btn'
+						>
+							<FaCheck />
+						</button>
+						<button
+							type='button'
+							onClick={() => showConfirmation(true)}
+							className='btn transparent-btn'
+						>
+							<FaTrashAlt />
+						</button>
+						    <button
+							type="button"
+							className="btn transparent-btn"
+							onClick={() => navigate(-1)}>
+            <FaTimes fontSize={"1.2rem"}/>
           </button>
+					</div>
+         
         </div>
 				<div className="content">
+					<div className='row'>
+						<div className="status">
+						<span className="status-text">{ status.text }</span>
+						<span className="status-indicator" style={
+							{
+								backgroundColor: status.color
+							}}>
+						</span>
+					</div>
+					</div>
 					<div className="row">
 						{error && <Alert className="col" severity="error">{error}</Alert>}
 					</div>
@@ -194,16 +240,6 @@ function EditTaskView({project}) {
 								{isNewTask ? 'Add' : 'Update'}
 								{loading && <Spinner className="spinner-small"/>}
               </button>
-						</div>
-						<div className="col">
-							{!isNewTask && (
-								<button
-									type="button"
-									onClick={()=>showConfirmation(true)}
-									className="btn danger-btn">
-                  Delete
-                </button>
-              )}
 						</div>
           </div>
         </div>

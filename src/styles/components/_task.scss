@@ -13,20 +13,6 @@
     padding-right: 1rem;
     color: darken($primary, 20);
   }
-  .status {
-    font-size: 0.9rem;
-    display: inline-block;
-    .status-indicator {
-      display: inline-block;
-      vertical-align: middle;
-      width: 0.9rem;
-      height: 0.9rem;
-      border-radius: 50%;
-    }
-    .status-text {
-      margin-right: 5px;
-    }
-  }
   .text {
     display: block;
     font-weight: 400;

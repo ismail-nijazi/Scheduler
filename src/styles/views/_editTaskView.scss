@@ -41,6 +41,14 @@
           font-size: 0.2rem;
         }
       }
+			.status{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				.status-text{
+					color: $text;
+				}
+			} 
     }
 
     .footer {

@@ -31,7 +31,7 @@ function TasksView() {
 			<SearchHeader
 				onSearch={onSearch}
 				title="Tasks"
-				sort={(sortBy) => setTasks(sortTasks(tasks, sortBy))}
+				sort={(sortBy) => setTasks(sortTasks(sortBy,tasks))}
 				newTaskRoute="/task/new"
 			/>
 			{tasksStore.loading ?

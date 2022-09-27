@@ -73,9 +73,9 @@ function SearchHeader({ title ,onSearch, sort, options,newTaskRoute }) {
 					<button
 						type="button"
 						className="btn transparent-btn"
-						onClick={() => onSort(SORTING_OPTIONS.PROJECT)}
+						onClick={() => onSort(SORTING_OPTIONS.STATUS)}
 					>
-						Project
+						Status
 					</button>
 				</div>
 			</div>

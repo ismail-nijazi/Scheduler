@@ -149,13 +149,12 @@ export const formatTask = (task) => {
 		starting_time: taskStartTime,
 		deadline: taskDeadline,
 		status: status,
-		color: generateRandomColor(),
 	}
 }
 
 export const SORTING_OPTIONS = {
 	STARTING_DATE: 0,
-	PROJECT: 1
+	STATUS: 1
 }
 
 export const sortTasks = (sortBy, tasks) => {
@@ -163,13 +162,14 @@ export const sortTasks = (sortBy, tasks) => {
 	switch (sortBy) {
 		case SORTING_OPTIONS.STARTING_DATE:
 			tasksCopy.sort((taskA, taskB) =>
-					new Date(taskA.starting_time) -
-					new Date(taskB.starting_time)
+				new Date(taskA.starting_time) -
+				new Date(taskB.starting_time)
 			);
 			break;
-		case SORTING_OPTIONS.PROJECT:
+		case SORTING_OPTIONS.STATUS:
 			tasksCopy.sort((taskA, taskB) =>
-				taskA.category_id - taskB.category_id
+				taskA.status -
+				taskB.status
 			);
 			break;
 		default:
@@ -197,7 +197,8 @@ export const createTask = async (dispatch, data) => {
 		...data,
 		user: auth.currentUser.uid,
 		starting_time: startingDate,
-		deadline: deadline
+		deadline: deadline,
+		color: generateRandomColor(),
 	}
 	if (data.id) {
 		await tasks.create(newTasks, data.id);
@@ -223,6 +224,20 @@ export const getProjects = async (dispatch) => {
 	const usersProjects = await projects.getUsersData();
 	dispatch(tasksSlice.actions.setProjects(usersProjects));
 	dispatch(tasksSlice.actions.setLoading(false));
+}
+
+export const setTheTaskCompeleted = (dispatch, task) => {
+	let actualDuration = 0;
+	if (task.starting_time < new moment()) {
+		actualDuration = Math.floor(
+			Math.abs(new moment() - task.starting_time) / 3600000
+		);
+	}
+	return createTask(dispatch, {
+		...task,
+		status: STATUSES.COMPELTED.value,
+		actual_duration: actualDuration,
+	});
 }
 
 export default tasksSlice.reducer;
