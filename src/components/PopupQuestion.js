@@ -11,10 +11,12 @@ function PopupQuestion({
 	title,
 	alert,
 	text,
+	body,
 	confirm,
 	cancle,
 	visible,
-	onClose }
+	onClose
+}
 ) {
 	return (
 		<Dialog
@@ -30,7 +32,8 @@ function PopupQuestion({
 					<DialogContentText id="alert-dialog-description">
 						{text}
 						{alert}
-          </DialogContentText>
+					</DialogContentText>
+					{body}
         </DialogContent>
         <DialogActions>
 					<button

@@ -12,8 +12,10 @@
 		}
 	}
   main {
+		@include hideScrollbar;
     position: relative;
     height: 100%;
+		overflow-y:scroll;
     .no-tasks {
       position: absolute;
       left: 50%;

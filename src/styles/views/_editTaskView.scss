@@ -35,12 +35,6 @@
         width: 100%;
         border-radius: 5px;
       }
-      .select {
-        font-size: 0.9rem;
-        li {
-          font-size: 0.2rem;
-        }
-      }
 			.status{
 				display: flex;
 				justify-content: center;
@@ -53,6 +47,8 @@
 
     .footer {
       margin-top: 5rem;
+			display: flex;
+			gap: 1rem;
       .btn {
         padding: 5px 2rem;
         margin-right: 2rem;

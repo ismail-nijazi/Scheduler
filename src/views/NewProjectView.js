@@ -2,18 +2,23 @@ import React, {useState} from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from "react-icons/fa";
+import { Select, MenuItem} from '@mui/material';
 import { projects } from '../services/database';
 import { auth } from '../firebase';
 import Spinner from '../components/Spinner';
 import { getProjects, setTasksPerProject } from '../store/slices/tasks';
+import projectColors,{colors} from '../styles/config/colors';
+import styles from '../styles/config/material_ui';
 
 function NewProjectView() {
 	const navigate = useNavigate();
 	const tasksStore = useSelector(state => state.tasks);
 	const selectedProject = tasksStore.tasksPerProject.project;
 	const isNewProject = useLocation().pathname.includes('new');
-	const [title, setTitle] = useState(
-		isNewProject ? "" : selectedProject.name);
+	const [newProject, setProject] = useState({
+		name: isNewProject ? "" :selectedProject.name,
+		color: "",
+	})
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
@@ -21,17 +26,19 @@ function NewProjectView() {
 		setLoading(true);
 		if (isNewProject) {
 			await projects.create({
-				name: title,
+				name: newProject.name,
+				color: newProject.color,
 				user: auth.currentUser.uid
 			});
 		} else {
 			await projects.create({
-				name: title,
+				name: newProject.name,
+				color: newProject.color,
 				user: auth.currentUser.uid
 			}, selectedProject.id);
 			dispatch(setTasksPerProject({
 				...tasksStore.tasksPerProject,
-				project: {...selectedProject, name: title}
+				project: {...selectedProject, ...newProject}
 			}));
 		}
 
@@ -60,10 +67,51 @@ function NewProjectView() {
                 className="input"
                 type="text"
                 name="title"
-								value={title}
+								value={newProject.name}
 								placeholder="Title"
-                onChange={(event) =>setTitle(event.target.value)}
+                onChange={(event) =>setProject({...newProject, name:event.target.value})}
               />
+            </div>
+					</div>
+					<div className="row">
+						<div className="col">
+							<span>Color</span>
+              <Select
+                labelId="task-category"
+                id="task-category-select"
+                value={newProject.color || colors.defaultProject}
+                label="Project"
+                onChange={(event) =>
+                  setProject({
+                    ...newProject,
+                    color: event.target.value
+                  })
+                }
+								className="select">
+								<MenuItem 
+									sx={styles.menuItem} 
+									value={colors.defaultProject}
+								>
+                  <div
+										className="color-option"
+										style={{ 
+											backgroundColor: colors.defaultProject}}
+									/>
+                </MenuItem>
+								{projectColors.map((color) =>
+									<MenuItem
+										sx={styles.menuItem}
+										value={color}
+										key={color}
+									>
+										<div
+											className="color-option"
+											style={{ 
+												backgroundColor: color}}
+										/>
+									</MenuItem>
+								)}
+              </Select>
             </div>
 					</div>
 					<div className="row footer">

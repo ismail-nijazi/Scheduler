@@ -23,7 +23,10 @@ function ResetPasswordForm() {
 			<form>
 				<div className="row">
 					{success &&
-						<Alert className="col" severity="success">{success}</Alert>
+						<Alert 
+							className="alert" 
+							severity="success" 
+						>{success}</Alert>
 					}
 				</div>
 				<p className="text">

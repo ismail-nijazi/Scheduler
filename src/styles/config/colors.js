@@ -1,4 +1,5 @@
 export default [
+	'#e36464aa',
   '#AF0171aa',
   '#8758FFaa',
   '#ABD9FFaa',
@@ -9,9 +10,14 @@ export default [
   '#FFAE6Daa',
   '#277BC0aa',
   '#E6D2AAaa',
-  '#256D85aa',
-  '#FFDBA4aa',
 ];
+
+export const colors = {
+	pirmary: "#FFC495",
+	secondary: "#F15C5C",
+	text: "#222",
+	defaultProject: "#ff6e6eaa",
+}
 
 export const statusColors = {
 	NOT_STARTED: "#eba86a",

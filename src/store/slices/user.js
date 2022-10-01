@@ -10,67 +10,72 @@ import { users } from '../../services/database';
 import { getTasks } from "./tasks";
 
 const initialState = {
-  visible: false,
 	isLoggedIn: false,
-	user: null
+	user: null,
+	userCapacity: 0,
 };
+
+export const MINST_HOURS_PER_WEEK = 1;
+export const MAX_HOURS_PER_WEEK = 168;
 
 const userSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    showProfile: (state, action) => {
-      state.visible = action.payload;
-    },
     setLogin: (state, action) => {
       state.isLoggedIn = action.payload;
 		},
 		forgotPassword: async (state) => {
       state.isLoggedIn = true;
 		},
-		
 		setUser: (state, action) => {
 			state.user = action.payload;
+		},
+		setUserCapacity: (state, action) => {
+			state.userCapacity = action.payload;
 		}
   }
 });
 
 export const {
-	showProfile,
 	setLogin,
 	forgotPassword,
-	setUser
+	setUser,
+	setUserCapacity
 } = userSlice.actions;
 
-export const signUp = async (dispatch,accountInfo) => {
+export const signUp = async (dispatch, accountInfo) => {
 	const user = await createUserWithEmailAndPassword(
 		auth,
 		accountInfo.email,
-		accountInfo.password
+		accountInfo.password,
 	);
 	await users.create({
 		email: accountInfo.email,
 		username: "",
+		capacity: accountInfo.capacity
 	}, auth.currentUser.uid);
-
 	dispatch(userSlice.actions.setUser(user));
+	dispatch(userSlice.actions.setUserCapacity(user.capacity));
 	dispatch(userSlice.actions.setLogin(true));
 }
 
 export const login = async (dispatch,accountInfo) => {
-	const user = await signInWithEmailAndPassword(
+	await signInWithEmailAndPassword(
 			auth,
 			accountInfo.email,
 			accountInfo.password
 	);
+	const user = users.getOne(auth.currentUser.uid);
 	dispatch(userSlice.actions.setUser(user));
+	dispatch(userSlice.actions.setUserCapacity(user.capacity));
 	getTasks(dispatch);
 }
 
 export const updateUserProfile = async (dispatch, accountInfo) => {
 	await users.create({
 		email: accountInfo.email,
-		username: "",
+		capacity: accountInfo.capacity
 	}, auth.currentUser.uid);
 	await updateEmail(auth.currentUser, accountInfo.email);
 }
@@ -81,6 +86,4 @@ export const deleteAccount = async (dispatch) => {
 	dispatch(userSlice.actions.setUser(null));
 	dispatch(userSlice.actions.setLogin(false));
 }
-
-
 export default userSlice.reducer;

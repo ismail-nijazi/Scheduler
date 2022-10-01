@@ -1,7 +1,7 @@
 @import '../config/config';
 
 nav {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   display: flex;
@@ -32,21 +32,34 @@ nav {
     .profile-btn {
       display: block;
       min-width: 50px;
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       overflow: hidden;
       border-radius: 50%;
       padding: 0;
       margin: auto;
-      img {
-        display: block;
+			.profile-image{
+				display: flex;
+				justify-content: center;
+				align-items: center;
         width: 100%;
         height: 100%;
         object-fit: cover;
         border: 1px solid $whiteText;
         padding: 3px;
         border-radius: 50%;
-      }
+				background-color: lighten($secondary, 10);
+				color: $whiteText;
+			}
+      // img {
+      //   display: block;
+      //   width: 100%;
+      //   height: 100%;
+      //   object-fit: cover;
+      //   border: 1px solid $whiteText;
+      //   padding: 3px;
+      //   border-radius: 50%;
+      // }
     }
     span {
       display: block;
@@ -64,24 +77,26 @@ nav {
     }
   }
 
+	.nav-link {
+		color: $text;
+		width: fit-content;
+		text-decoration: none;
+		text-align: left;
+	}
+
+	.nav-link:hover {
+      color: $secondary;
+    }
+	.active {
+		color: $secondary;
+		text-decoration: underline;
+	}
+
   .links {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     padding: 0 2rem;
-    .nav-link {
-      color: $text;
-      width: fit-content;
-      text-decoration: none;
-      text-align: left;
-    }
-    .nav-link:hover {
-      color: $secondary;
-    }
-    .active {
-      color: $secondary;
-      text-decoration: underline;
-    }
 
     .sub-link {
       margin-left: 1rem;

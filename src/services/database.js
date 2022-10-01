@@ -7,7 +7,8 @@ import {
 	getDoc,
 	getDocs,
 	query,
-	where 
+	where,
+	writeBatch
 } from "firebase/firestore";
 import { database,auth } from "../firebase";
 
@@ -44,8 +45,24 @@ class DatabaseService {
 		});
 	}
 
+	removeProjectsTasks = async (projectId) => {
+		let q = query(this.collection,
+			where("user", "==", auth.currentUser.uid),
+			where("project", "==", projectId)
+		);
+		await getDocs(q).then(
+			async (querySnapshot) => {
+				const batch = writeBatch(database);
+				querySnapshot.forEach(
+					d => batch.delete(d.ref)
+				);
+        await batch.commit();
+		});
+	}
+
 	getOne = async (id) => {
-		return await getDoc(doc(this.collection, id));
+		const response = await getDoc(doc(this.collection, id));
+		return response.data();
 	}
 	
 	create = async (data, id) => {
@@ -62,5 +79,5 @@ class DatabaseService {
 
 export const users = new DatabaseService('users');
 export const tasks = new DatabaseService('task');
-export const status = new DatabaseService('status');
+// export const status = new DatabaseService('status');
 export const projects = new DatabaseService('projects');

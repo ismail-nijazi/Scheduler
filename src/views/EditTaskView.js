@@ -12,7 +12,9 @@ import {
 	getTasks, 
 	getTasksPerProject, 
 	setTheTaskCompeleted, 
-	STATUSES} from '../store/slices/tasks';
+	calculateRemainedCapacity,
+	STATUSES
+} from '../store/slices/tasks';
 import PopupQuestion from '../components/PopupQuestion';
 import { tasks } from '../services/database';
 import Spinner from '../components/Spinner';
@@ -27,8 +29,9 @@ const INITIAL_TASK = {
 };
 
 function EditTaskView({project}) {	
-	const taskStore = useSelector((state) => state.tasks);
   const navigate = useNavigate();
+	const taskStore = useSelector((state) => state.tasks);
+	const userProfile = useSelector((state) => state.profile);
   const isNewTask = useLocation().pathname.includes('new');
 	const [error, setError] = useState("");
 	const [newTask, setTask] = useState(
@@ -43,6 +46,7 @@ function EditTaskView({project}) {
 		if (isNewTask && project) {
 			setTask({ ...newTask, project: taskStore.tasksPerProject.project.id });
 		}
+		
 	}, []);
 
 	const setAsCompeletd = () => {
@@ -55,12 +59,24 @@ function EditTaskView({project}) {
 	}
 	
 	const validateTask = () => {
+		const sumEstimatedDuration = calculateRemainedCapacity(
+			taskStore.tasks, userProfile.userCapacity, newTask);
 		if (!newTask.description) {
 			setError("You have to add a description!");
 			return false;
 		}
 		else if (newTask.deadline <= newTask.starting_time) {
 			setError("The deadline should be after starting time!");
+			return false;
+		}
+		else if (
+			(userProfile.capacity - sumEstimatedDuration) < 0 ||
+			(sumEstimatedDuration - newTask.estimated_duration) < 0
+		) {
+			setError(`
+			During the week that this task starts, you already have
+			several other tasks that left you with only ${sumEstimatedDuration}  hours
+			available to assign a new task`);
 			return false;
 		}
 		return true;
@@ -70,9 +86,21 @@ function EditTaskView({project}) {
 		if (validateTask()) {
 			setLoading(true);
 			await createTask(dispatch, newTask);
+			await getTasksPerProject(dispatch, taskStore.tasksPerProject.project);
+			await getTasks(dispatch);
 			setLoading(false);
 			navigate(-1);
 		}
+	}
+
+	const deleteTheTask = async () => {
+		setLoading(true);
+		await tasks.remove(taskStore.selectedTask.id);
+		await getTasksPerProject(
+			dispatch, taskStore.tasksPerProject.project);
+		await getTasks(dispatch);
+		setLoading(false);
+		navigate(-1);
 	}
 
   return (
@@ -82,12 +110,7 @@ function EditTaskView({project}) {
 				text="Are you sure you want to delet this task?"
 				visible={confirmation}
 				onClose={() => showConfirmation(false)}
-				confirm={async () => {
-					await tasks.remove(taskStore.selectedTask.id);
-						getTasks(dispatch);
-						navigate(-1);
-					}
-				}
+				confirm={deleteTheTask}
 				cancle={() => showConfirmation(false)}
 			/>
       <div className="edit-task">
@@ -97,25 +120,30 @@ function EditTaskView({project}) {
 						task
 					</span>
 					<div>
-						<button
-							type='button'
-							onClick={setAsCompeletd}
-							className='btn transparent-btn'
-						>
-							<FaCheck />
-						</button>
-						<button
-							type='button'
-							onClick={() => showConfirmation(true)}
-							className='btn transparent-btn'
-						>
+						{
+							newTask.status !== STATUSES.COMPELTED.value && 
+							<button
+								type='button'
+								onClick={setAsCompeletd}
+								className='btn transparent-btn'
+							>
+								<FaCheck />
+							</button>
+						}
+						{!isNewTask && 
+							<button
+								type='button'
+								onClick={() => showConfirmation(true)}
+								className='btn transparent-btn'
+							>
 							<FaTrashAlt />
-						</button>
-						    <button
+							</button>
+						}
+						<button
 							type="button"
 							className="btn transparent-btn"
 							onClick={() => navigate(-1)}>
-            <FaTimes fontSize={"1.2rem"}/>
+            <FaTimes/>
           </button>
 					</div>
          
@@ -132,7 +160,9 @@ function EditTaskView({project}) {
 					</div>
 					</div>
 					<div className="row">
-						{error && <Alert className="col" severity="error">{error}</Alert>}
+						{error && <Alert 
+							className="alert" 
+							severity="error">{error}</Alert>}
 					</div>
           <div className="row">
             <div className="col">
@@ -230,17 +260,27 @@ function EditTaskView({project}) {
               />
             </div>
           </div>
-          <div className="row footer">
-            <div className="col">
-							<button
+          <div className="footer">
+						<button
+							type="button"
+							className="btn primary-btn"
+							onClick={submit}
+							disabled={loading}
+						>
+							{isNewTask ? 'Add' : 'Update'}
+							{loading && <Spinner className="spinner-small"/>}
+						</button>
+						{/* {
+							!isNewTask && <button
 								type="button"
-								className="btn primary-btn"
+								className="btn danger-btn"
 								onClick={submit}
 							>
-								{isNewTask ? 'Add' : 'Update'}
+								Cancle
 								{loading && <Spinner className="spinner-small"/>}
-              </button>
-						</div>
+							</button>
+						} */}
+				
           </div>
         </div>
       </div>

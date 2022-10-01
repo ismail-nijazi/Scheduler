@@ -4,7 +4,7 @@ import moment from 'moment';
 import { FaChevronRight, FaChevronLeft, FaPlus } from 'react-icons/fa';
 import TimelineTask from '../components/TimelineTask';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedWeek } from '../store/slices/tasks';
+import { setSelectedWeek, isTaskInSelectedWeek } from '../store/slices/tasks';
 
 
 const getDates = (startDate, stopDate) => {
@@ -25,22 +25,6 @@ const getWeekNumber = (selectedDate = new Date()) => {
   return Math.ceil(days / 7);
 };
 
-const filterTask = (task, startOfWeek, endOfWeek) => {
-  const taskStartTime = new Date(task.starting_time);
-  const taskEndTime = new Date(task.deadline);
-
-  if (taskStartTime >= startOfWeek && taskStartTime <= endOfWeek) {
-    return true;
-  }
-  if (
-    taskStartTime <= startOfWeek &&
-    (taskEndTime >= endOfWeek || taskEndTime >= startOfWeek)
-  ) {
-    return true;
-  }
-  return false;
-};
-
 function TimelineView() {
 	const tasksStore = useSelector(state => state.tasks)
   const endOfWeek = moment(tasksStore.selectedWeek).endOf('isoWeek').toDate();
@@ -49,9 +33,9 @@ function TimelineView() {
 	
 	const tasks = useMemo(() => {
 		return tasksStore.tasks.filter(
-			(task) => filterTask(task, tasksStore.selectedWeek, endOfWeek)
+			(task) => isTaskInSelectedWeek(task, tasksStore.selectedWeek, endOfWeek)
 		);
-	}, [tasksStore.tasks, endOfWeek, tasksStore.selectedWeek]);
+	}, [tasksStore.tasks, endOfWeek,tasksStore.selectedWeek]);
 
   const changeWeek = (previous = false) => {
     if (previous) {

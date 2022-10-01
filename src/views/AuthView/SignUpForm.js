@@ -1,12 +1,17 @@
 import React,{ useState }  from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import { signUp } from "../../store/slices/user";
+import {
+	signUp, 
+	MINST_HOURS_PER_WEEK, 
+	MAX_HOURS_PER_WEEK } from "../../store/slices/user";
 import { useDispatch } from 'react-redux';
+import { FaQuestionCircle } from "react-icons/fa";
+import { Tooltip } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Spinner from '../../components/Spinner';
 
 function SignUpForm() {
-	const [accountInfo, setAccount] = useState({ email: "", password:"" });
+	const [accountInfo, setAccount] = useState({ email: "", password:"", capacity: 40 });
 	const [error, setError] = useState("");
 	const [repteatPass, setRepeatPass] = useState("");
 	const [loading, setLoding] = useState(false);
@@ -21,6 +26,13 @@ function SignUpForm() {
 		else if (accountInfo.password !== repteatPass) {
 			setError("Password are not mtached!");
 		}
+		
+		else if (
+			accountInfo.capacity < MINST_HOURS_PER_WEEK ||
+			accountInfo.capacity > MAX_HOURS_PER_WEEK) {
+			setError("The capacity should be between 1 to 168 hours");
+		}
+			
 		else {
 			setLoding(true);
 			try {
@@ -43,7 +55,10 @@ function SignUpForm() {
 			<h3 className="title">Sign up </h3>
 			<form>
 				<div className="row">
-					{error && <Alert className="col" severity="error">{error}</Alert>}
+					{error &&	<Alert 
+							className="alert" 
+							severity="error" 
+							>{error}</Alert>}
 				</div>
 				<div className="row">
 					<div className="col">
@@ -89,6 +104,34 @@ function SignUpForm() {
 							value={repteatPass}
 							onChange={(event) => setRepeatPass(event.target.value)}
 							placeholder="Repeat password"
+						/>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col">
+						<label htmlFor="capacity">
+							Capacity
+							<Tooltip
+								title={
+										"Count of hours/weeks you \
+										would spend on your tasks"
+									}>
+								<button className="field-description">
+									<FaQuestionCircle />
+								</button>
+							</Tooltip>
+						</label>
+						<input
+							type="number"
+							name="capacity"
+							value={accountInfo.capacity}
+							id="capacity"
+							onChange={(event) => setAccount(
+								{ ...accountInfo, capacity: event.target.value })
+							}
+							placeholder="example@mail.com"
+							min={MINST_HOURS_PER_WEEK}
+							max={MAX_HOURS_PER_WEEK}
 						/>
 					</div>
 				</div>

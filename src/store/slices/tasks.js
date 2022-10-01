@@ -2,8 +2,22 @@ import { createSlice } from '@reduxjs/toolkit';
 import { projects, tasks } from '../../services/database';
 import { auth } from '../../firebase';
 import { Timestamp } from 'firebase/firestore';
-import tasksColors ,{ statusColors } from '../../styles/config/colors';
+import { statusColors } from '../../styles/config/colors';
 import moment from 'moment';
+
+const initialState = {
+	newTaskPage: false,
+	selectedWeek: moment().startOf('isoWeek').toDate(),
+	selectedTask: null,
+	usersProjects:[],
+	tasks: [],
+	tasksPerProject: {
+		project: null,
+		tasks: [],
+	},
+	loading: false,
+	statuses:[],
+};
 
 export const STATUSES = {
 	NOT_STARTED: {
@@ -63,26 +77,7 @@ export const getStatus = (status) => {
 	}
 }
 
-const generateRandomColor = () => {
-	const colorIndex = Math.floor(Math.random() * tasksColors.length);
-	return tasksColors[colorIndex];
-};
-
 export const SELECTED_PROJECT_KEY = "scheduler-selected-project";
-
-const initialState = {
-	newTaskPage: false,
-	selectedWeek: moment().startOf('isoWeek').toDate(),
-	selectedTask: null,
-	usersProjects:[],
-	tasks: [],
-	tasksPerProject: {
-		project: null,
-		tasks: [],
-	},
-	loading: false,
-	statuses:[],
-};
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -198,14 +193,12 @@ export const createTask = async (dispatch, data) => {
 		user: auth.currentUser.uid,
 		starting_time: startingDate,
 		deadline: deadline,
-		color: generateRandomColor(),
 	}
 	if (data.id) {
 		await tasks.create(newTasks, data.id);
 	} else {
 		await tasks.create(newTasks);
 	}
-	getTasks(dispatch);
 }
 
 export const getTasksPerProject = async (dispatch, project) => {
@@ -238,6 +231,51 @@ export const setTheTaskCompeleted = (dispatch, task) => {
 		status: STATUSES.COMPELTED.value,
 		actual_duration: actualDuration,
 	});
+}
+
+export const isTaskInSelectedWeek = (task, startOfWeek, endOfWeek) => {
+  const taskStartTime = new Date(task.starting_time);
+  const taskEndTime = new Date(task.deadline);
+
+  if (taskStartTime >= startOfWeek && taskStartTime <= endOfWeek) {
+    return true;
+  }
+  if (
+    taskStartTime <= startOfWeek &&
+    (taskEndTime >= endOfWeek || taskEndTime >= startOfWeek)
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const calculateRemainedCapacity = (
+	tasksList, capacity, newTask
+) => {
+	const startOfWeek = new moment(newTask.starting_time).startOf('isoWeek').toDate();
+	const endOfWeek = new moment(newTask.deadline).endOf('isoWeek').toDate();
+	const tasksInSameWeek = tasksList.filter(
+		task => {
+			return isTaskInSelectedWeek(task, startOfWeek, endOfWeek)
+				&& task.id !== newTask.id
+		}
+	);
+	const sumEstimatedDuration = tasksInSameWeek.reduce((total, task) =>
+	{
+		return total + parseInt(task.estimated_duration)
+	}, 0);
+	return capacity - sumEstimatedDuration;
+}
+
+export const initUserData = async (dispatch) => {
+	const selectedProject = JSON.parse(
+		localStorage.getItem(SELECTED_PROJECT_KEY)
+	);
+	getTasks(dispatch);
+	getProjects(dispatch);
+	if (selectedProject) {
+		getTasksPerProject(dispatch,selectedProject);
+	}
 }
 
 export default tasksSlice.reducer;

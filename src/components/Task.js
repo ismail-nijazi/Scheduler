@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedTask, 
 	getStatus, 
 	getTasksPerProject,
-	setTheTaskCompeleted
+	setTheTaskCompeleted,
+	getTasks
 } from '../store/slices/tasks';
-import moment from "moment";
 
 const OPTION_DATE = {
 	dateStyle: "medium"
@@ -19,7 +19,7 @@ function Task({ task }) {
 	const dispatch = useDispatch();
 
 	const setAsCompeletd = () => {
-		setTheTaskCompeleted(dispatch, task)
+		setTheTaskCompeleted(dispatch, task).then(getTasks(dispatch))
 		if (tasksStore.tasksPerProject?.project) {
 			getTasksPerProject(dispatch, tasksStore.tasksPerProject?.project);
 		}

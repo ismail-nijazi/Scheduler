@@ -7,6 +7,7 @@ import AuthView from "../views/AuthView/AuthView";
 import Navbar from '../components/Navbar';
 import NewProjectView from '../views/NewProjectView';
 import ProjectView from '../views/ProjectView';
+import ProfileView from '../views/ProfileView';
 
 const AuthRoutes = () => {
 	return (
@@ -39,6 +40,7 @@ function RootRoutes() {
 					<Route path="/project/new" element={<NewProjectView />} />
 					<Route path="/project/edit" element={<NewProjectView />} />
 					<Route path="/project/:id" element={<ProjectView />} />
+					<Route path="/profile" element={<ProfileView/>}/>
 					<Route path="*" element={<TimelineView />} />
 				</Routes>
 			</div>

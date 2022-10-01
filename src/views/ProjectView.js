@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { sortTasks,getProjects } from '../store/slices/tasks';
+import { sortTasks, getProjects, getTasks } from '../store/slices/tasks';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import SearchHeader from '../components/SearchHeader';
 import Task from '../components/Task'
 import PopupQuestion from '../components/PopupQuestion';
-import { projects } from "../services/database";
+import { projects,tasks } from "../services/database";
 
 function ProjectView() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const tasksStore = useSelector(state => state.tasks);
- 	const [tasks, setTasks] = useState(tasksStore.tasksPerProject.tasks);
+ 	const [tasksList, setTasks] = useState(tasksStore.tasksPerProject.tasks);
 	const [deleteConfirm, showConfirmation] = useState(false);
 
 	useEffect(() => {
@@ -67,8 +67,12 @@ function ProjectView() {
 				visible={deleteConfirm}
 				onClose={() => showConfirmation(false)}
 				confirm={async () => {
+					await tasks.removeProjectsTasks(
+						tasksStore.tasksPerProject.project.id
+					);
 					await projects.remove(tasksStore.tasksPerProject.project.id);
 					getProjects(dispatch);	
+					getTasks(dispatch);	
 					navigate("/tasks");
 					}
 				}
@@ -77,7 +81,7 @@ function ProjectView() {
 			<SearchHeader
 				title={tasksStore.tasksPerProject?.project?.name || "Tasks"}
 				onSearch={onSearch}
-				sort={(sortBy) => setTasks(sortTasks(tasks, sortBy))}
+				sort={(sortBy) => setTasks(sortTasks(sortBy,tasks))}
 				options={renderOptions()}
 				newTaskRoute="/project/new-task"
 			/>
@@ -86,8 +90,8 @@ function ProjectView() {
 					<Spinner className="spinner-medium"/>
 				</main> :
 				<main>
-					{ tasks.length > 0 ? 
-						tasks.map((task, index) => <Task task={task} key={index} />) :
+					{ tasksList.length > 0 ? 
+						tasksList.map((task, index) => <Task task={task} key={index} />) :
 						<div className="no-tasks">
 							<img src={require("../assets/images/no-tasks.png")} />
 							<span>No tasks found...</span>

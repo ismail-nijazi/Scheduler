@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedTask } from '../store/slices/tasks';
+import {colors} from '../styles/config/colors';
 
 const COUNT_OF_HOURS_IN_WEEK = 168;
 const OPTION_HOUR_MINUT = {
@@ -10,12 +11,16 @@ const OPTION_HOUR_MINUT = {
 };
 
 function TimelineTask({ task, startOfWeek }) {
+	const tasksStore = useSelector(state => state.tasks)
 	const dispatch = useDispatch();
 	const diff = Math.floor(Math.abs(task.deadline - task.starting_time) / 3600000);
 	
   const getTaskStyle = () => {
     const taskStartTime = new Date(task.starting_time);
-    const taskDeadline = new Date(task.deadline);
+		const taskDeadline = new Date(task.deadline);
+		const taksProject = tasksStore.usersProjects.find(
+			project => project.id === task.project
+		);
     let startLeft = 0;
     let startToEndHours = (Math.abs(
       startOfWeek - taskDeadline,
@@ -33,7 +38,7 @@ function TimelineTask({ task, startOfWeek }) {
     return {
       marginLeft: `${startLeft * 100}%`,
       width: `${startToEndHours * 100}%`,
-      backgroundColor: task.color,
+      backgroundColor: taksProject ? taksProject.color : colors.defaultProject,
 		};
 		
 	};

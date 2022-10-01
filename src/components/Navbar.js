@@ -9,7 +9,7 @@ import {
 import { signOut } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from "../firebase";
-import { setLogin, showProfile } from '../store/slices/user';
+import { setLogin } from '../store/slices/user';
 import { getTasksPerProject } from '../store/slices/tasks';
 
 function Navbar({ visible, setVisibility }) {
@@ -39,20 +39,21 @@ function Navbar({ visible, setVisibility }) {
           onClick={() => showOptions(!optionsVisible)}
           type="button"
         >
-          <img src={require('../assets/images/profile.png')} alt="profile" />
+					<div className="profile-image">
+						<h4>{profile.user.email.slice(0,2).toUpperCase()}</h4>
+					</div>
         </button>
 				<span>{profile.user.email}</span>
         <div className={optionsVisible ? 'options' : 'options hide'}>
-          <button
-            type="button"
+					<NavLink
+						to={`/profile`}
             onClick={() => {
-              dispatch(showProfile(true));
               showOptions(false);
             }}
-            className="btn transparent-btn"
+						className="btn nav-link"
           >
             Profile
-          </button>
+          </NavLink>
           {/* <button
             type="button"
             className="btn transparent-btn"

@@ -2,7 +2,10 @@
 
 .search-header {
 	padding: 1rem;
-	border-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	border-bottom: 1px solid $lightGray;
+	// background-color: lighten($lightGray, 16);
 	div {
 		flex-grow: 1;
 		flex-wrap: nowrap;

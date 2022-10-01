@@ -35,7 +35,10 @@ function LoginForm() {
 			<h3 className="title">Log in</h3>
 			<form>
 				<div className="row">
-					{error && <Alert className="col" severity="error">{error}</Alert>}
+					{error && <Alert 
+							className="alert" 
+							severity="error" 
+							sx={{width: "100%"}}>{error}</Alert>}
 				</div>
 				<div className="row">
 					<div className="col">

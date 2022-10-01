@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaTimes } from 'react-icons/fa';
-import { showProfile,deleteAccount, updateUserProfile } from '../store/slices/user';
+import { FaTimes,FaQuestionCircle } from 'react-icons/fa';
+import { 
+	deleteAccount, 
+	updateUserProfile,
+	MINST_HOURS_PER_WEEK, 
+	MAX_HOURS_PER_WEEK,
+	login
+} from '../store/slices/user';
 import {
   updatePassword,
   reauthenticateWithCredential,
@@ -11,6 +17,7 @@ import {
 import { auth } from "../firebase";
 import {
 	Alert,
+	Tooltip
 } from "@mui/material";
 import Spinner from "../components/Spinner";
 import PopupQuestion from '../components/PopupQuestion';
@@ -20,10 +27,13 @@ function ProfileView() {
 	const profile = useSelector((state) => state.profile);
 	const [accountInfo, setAccountInfo] = useState({
 		email: profile.user.email,
+		capacity: profile.userCapacity,
 		oldPassword: "",
 		newPassowrd: ""
 	});
+	
 	const [reapeatPass, setRepeatPass] = useState("");
+	const [passwordDeleteConfirm, setPassword] = useState("");
 	const [resetPasswordForm, setPasswordForm] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
@@ -39,6 +49,16 @@ function ProfileView() {
 		
 		if (accountInfo.newPassowrd !== reapeatPass) {
 			setError("Passwords are not matched!");
+			return false;
+		}
+		return true;
+	}
+
+	const validateFields = () => {
+		if (
+			accountInfo.capacity < MINST_HOURS_PER_WEEK ||
+			accountInfo.capacity > MAX_HOURS_PER_WEEK) {
+			setError("The capacity should be between 1 to 168 hours");
 			return false;
 		}
 		return true;
@@ -66,66 +86,111 @@ function ProfileView() {
 				throw err;
 			}
 		}
+		throw new Error(error);
 	}
 
 	const updateProfile = async () => {
+		if (validateFields()) {
+			try {
+				setLoading(true);
+				if (resetPasswordForm) {
+					await resetPassword();
+				}
+				await updateUserProfile(dispatch, {
+					email: accountInfo.email,
+					capacity: accountInfo.capacity
+				});
+				setSuccess("Your profile was updated successfully!");
+			} catch (err){
+				if (err.code == "auth/email-already-in-use") {
+					setError("The email address is already in use");
+				}
+			} finally {
+				setLoading(false);
+			}
+		}
+	}
+
+	const deleteUserAccount = async () => {
 		try {
 			setLoading(true);
-			if (resetPasswordForm) {
-				await resetPassword();
-			}
-			await updateUserProfile(dispatch, {
-				email: accountInfo.email,
+			await login(dispatch, {
+				email: profile.user.email,
+				password: passwordDeleteConfirm
 			});
-			setSuccess("Your profile was updated successfully!");
-		} catch (err){
-			if (err.code == "auth/email-already-in-use") {
-				setError("The email address is already in use");
+			await deleteAccount(dispatch);
+			navigate("/")
+		} catch (err) {
+			if (err.code == "auth/internal-error") {
+				setError("Something went wrong!");
 			}
+			else if (err.code == "auth/wrong-password") {
+				setError("The entered password was incorrect!");
+			}
+			showConfirm(false);
 		} finally {
 			setLoading(false);
 		}
 	}
 
   return (
-		<div className={profile.visible ? 'modal' : 'modal hidden'}>
-			<PopupQuestion
-				title={"Delete Account"}
-				text="Are you sure you want to delet your account?"
-				visible={confirmation}
-				onClose={() => showConfirm(false)}
-				confirm={async () => {
-						await deleteAccount(dispatch);
-						navigate("/")
-					}
-				}
-				cancle={() => showConfirm(false)}
-			/>
-      <div className="profile">
-        <div
-          className="row close-btn"
-        >
-          <button
-            type="button"
-            className="btn transparent-btn"
-            onClick={() => dispatch(showProfile(false))}
-          >
-            <FaTimes size={30} />
-          </button>
-        </div>
-				<div className="head">
+		<div className="modal">
+			<div className="profile">
+				<PopupQuestion
+					title={"Delete Account"}
+					text="Are you sure you want to delet your account?"
+					body={
+						<div className="confirm-pass">
+							<label htmlFor="password">
+								Password
+							</label>
+							<input
+								type="password"
+								name="password"
+								id="password"
+								value={passwordDeleteConfirm}
+								onChange={event => setPassword(event.target.value)}
+								placeholder="Password"
+							/>
+						</div>}
+					visible={confirmation}
+					onClose={() => showConfirm(false)}
+					confirm={deleteUserAccount}
+					cancle={() => showConfirm(false)}
+				/>
+				{/* <div className="head">
 					<input type="file" name="profie-image" hidden/>
           <button className="profile-image">
             <img src={require('../assets/images/profile.png')} alt="profile" />
           </button>
+        </div> */}
+
+				<div className="head">
+					<span
+						className="title">
+						Pofile
+					</span>
+					<div>
+						<button
+							type="button"
+							className="btn transparent-btn"
+							onClick={() => navigate(-1)}>
+							<FaTimes/>
+						</button>
+					</div>
         </div>
 				<div className="content">
 					<div className="row">
-						{error && <Alert className="col" severity="error">{error}</Alert>}
+						{error && <Alert 
+							className="alert" 
+							severity="error" 
+							sx={{width: "100%"}}>{error}</Alert>}
 					</div>
 					<div className="row">
 						{success &&
-							<Alert className="col" severity="success">{success}</Alert>
+							<Alert 
+							className="alert" 
+							severity="success">{success}</Alert>
 						}
 					</div>
           <div className="row">
@@ -143,14 +208,40 @@ function ProfileView() {
 								}
                 placeholder="example@mail.com"
               />
-            </div>
+						</div>
+						<div className="col">
+							<label htmlFor="capacity">
+								Capacity
+								<Tooltip
+									title={
+										"Count of hours/weeks you \
+										would spend on your tasks"
+									}
+								>
+									<button className="field-description">
+										<FaQuestionCircle />
+									</button>
+								</Tooltip>
+							</label>
+							<input
+								type="number"
+								name="capacity"
+								value={accountInfo.capacity}
+								id="capacity"
+								onChange={(event) => setAccountInfo(
+									{ ...accountInfo, capacity: event.target.value })
+								}
+								min={MINST_HOURS_PER_WEEK}
+								max={MAX_HOURS_PER_WEEK}
+							/>
+						</div>
 					</div>
 					{resetPasswordForm &&
 						<div className="resest-password">
 							<div className="col">
-								<span htmlFor="oldPassword">
+								<label htmlFor="oldPassword">
 									Old password
-								</span>
+								</label>
 								<input
 									type="password"
 									name="old-password"
@@ -167,9 +258,9 @@ function ProfileView() {
 							</div>
 							<div className="row">
 								<div className="col">
-									<span htmlFor="newPassowrd">
+									<label htmlFor="newPassowrd">
 										new Password
-									</span>
+									</label>
 									<input
 										type="password"
 										name="new-password"
@@ -185,9 +276,9 @@ function ProfileView() {
 									/>
 								</div>
 								<div className="col">
-									<span htmlFor="repeatPass">
+									<label htmlFor="repeatPass">
 										Repeat password
-									</span>
+									</label>
 									<input
 										type="password"
 										id="repeatPass"

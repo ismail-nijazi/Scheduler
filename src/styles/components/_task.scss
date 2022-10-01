@@ -11,7 +11,9 @@
   .time {
     font-size: 0.9rem;
     padding-right: 1rem;
-    color: darken($primary, 20);
+    // color: darken($primary, 20);
+		color: white;
+		border-radius: 4px;
   }
   .text {
     display: block;
