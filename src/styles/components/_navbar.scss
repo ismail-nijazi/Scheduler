@@ -82,6 +82,21 @@ nav {
 		width: fit-content;
 		text-decoration: none;
 		text-align: left;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		span{
+			margin-left: 10px;
+		}
+		.project-color{
+			display: inline-block;
+			width: 1rem;
+			height: 1rem;
+			vertical-align: middle;
+			border-radius: 50%;
+			margin-right: 10px;
+			border: 1px solid $lightGray;
+		}
 	}
 
 	.nav-link:hover {
@@ -89,7 +104,6 @@ nav {
     }
 	.active {
 		color: $secondary;
-		text-decoration: underline;
 	}
 
   .links {
@@ -163,6 +177,9 @@ nav {
 @media only screen and (max-width: 450px) {
   nav {
     width: 70%;
+		.nav-profile {
+			margin-bottom: 0;
+		}
     .nav-btn {
       transform: translateX(28px);
       top: 10px;

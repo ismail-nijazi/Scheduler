@@ -2,10 +2,10 @@
 .edit-task {
 	@include hideScrollbar;
 	@include modalWindow;
+	position: relative;
   .head {
 		@include windowHeader;
   }
-
   .content {
     position: relative;
     padding-bottom: 5rem;
@@ -71,8 +71,22 @@
   }
 }
 
+@media only screen and (max-width: 800px) {
+  .edit-task {
+    width: 80%;
+		.content{
+			width: 90%;
+		}
+  }
+}
+
 @media only screen and (max-width: 500px) {
   .edit-task {
-    width: 90%;
+    width: 100%;
+		margin: 1rem;
+		.content{
+			width: 90%;
+			margin: 2rem auto 0 auto;
+		}
   }
 }

@@ -25,6 +25,11 @@
   }
 }
 
+.mobile-task{
+	text-decoration: none;
+	color: $text;
+}
+
 .task {
   box-shadow: none;
   border: 1px solid $lightGray;
@@ -35,6 +40,9 @@
   }
   .col-2 {
     flex-grow: 2;
+  }
+	.time {
+		color: darken($gray, 20);
   }
   .buttons {
     display: flex;

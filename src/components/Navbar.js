@@ -4,16 +4,21 @@ import {
 	FaAngleRight,
 	FaAngleLeft,
 	FaPlus,
-	FaSignOutAlt
+	FaSignOutAlt,
+	FaCalendarAlt,
 } from 'react-icons/fa';
+import {BsUiChecks} from "react-icons/bs";
 import { signOut } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from "../firebase";
 import { setLogin } from '../store/slices/user';
 import { getTasksPerProject } from '../store/slices/tasks';
+import Spinner from './Spinner';
 
 function Navbar({ visible, setVisibility }) {
 	const [optionsVisible, showOptions] = useState(false);
+	const [csvURL, setExportURL] = useState("");
+	const [loading, setLoading] = useState(false);
 	const profile = useSelector(state => state.profile);
 	const tasksStore = useSelector(state => state.tasks);
 	const navigate = useNavigate();
@@ -22,6 +27,36 @@ function Navbar({ visible, setVisibility }) {
   const navButtonOnClick = () => {
     setVisibility(!visible);
 	};
+
+	const exportUserData = () => {
+		setLoading(true);
+		let csvHeader = [
+			"Starting time", 
+			"Deadline", 
+			"Description", 
+			"Estimated duration",
+			"Project",
+			"Status"
+		]
+		let csv = csvHeader.join(",") + "\n";
+		tasksStore.tasks.forEach(task => {
+			const taskProject = tasksStore.usersProjects.find(
+				project => project.id == task.project
+			);
+			let row = [
+				task.starting_time,
+				task.deadline,
+				task.description,
+				task.estimated_duration,
+				taskProject?.name || "No Project",
+				task.status
+			];
+			csv += `${row.join(',')}\n`;
+		});
+
+		setExportURL('data:text/csv;charset=utf-8,' + encodeURI(csv));
+		setLoading(false);
+	}
 
   return (
     <nav className={!visible ? 'navbar' : ''}>
@@ -40,7 +75,8 @@ function Navbar({ visible, setVisibility }) {
           type="button"
         >
 					<div className="profile-image">
-						<h4>{profile.user.email.slice(0,2).toUpperCase()}</h4>
+						<h4>{profile.user?.email?.slice(0, 2).toUpperCase()}
+						</h4>
 					</div>
         </button>
 				<span>{profile.user.email}</span>
@@ -53,7 +89,18 @@ function Navbar({ visible, setVisibility }) {
 						className="btn nav-link"
           >
             Profile
-          </NavLink>
+					</NavLink>
+					<a
+						href={csvURL}
+            onClick={exportUserData}
+						className="btn nav-link"
+						target="_blank"
+						rel="noreferrer"
+						download={`scheduler_export.csv`}
+						disabled={loading}
+          >
+            Export {loading && <Spinner className="spinner-small"/>}
+          </a>
           {/* <button
             type="button"
             className="btn transparent-btn"
@@ -64,10 +111,10 @@ function Navbar({ visible, setVisibility }) {
       </div>
       <div className="links">
         <NavLink to="/timeline" className="nav-link">
-          Timeline
+          <FaCalendarAlt /> <span>Timeline</span>
         </NavLink>
         <NavLink to="/tasks" className="nav-link">
-          Tasks
+          <BsUiChecks /> <span>Tasks</span>
         </NavLink>
       </div>
 			<div className="links ">
@@ -83,7 +130,12 @@ function Navbar({ visible, setVisibility }) {
 							className="nav-link sub-link"
 							key={project.id}
 						>
-						{project.name}
+							<span
+								className="project-color"
+							style={
+								{ backgroundColor: project.color }
+							}></span>
+							{project.name}
 						</NavLink>
 					)
 				}

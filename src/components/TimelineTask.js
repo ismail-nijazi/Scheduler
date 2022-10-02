@@ -15,7 +15,7 @@ function TimelineTask({ task, startOfWeek }) {
 	const dispatch = useDispatch();
 	const diff = Math.floor(Math.abs(task.deadline - task.starting_time) / 3600000);
 	
-  const getTaskStyle = () => {
+  const getTaskStyleWeek = () => {
     const taskStartTime = new Date(task.starting_time);
 		const taskDeadline = new Date(task.deadline);
 		const taksProject = tasksStore.usersProjects.find(
@@ -34,7 +34,6 @@ function TimelineTask({ task, startOfWeek }) {
         taskStartTime - startOfWeek,
       ) / 36e5) / COUNT_OF_HOURS_IN_WEEK;
     }
-
     return {
       marginLeft: `${startLeft * 100}%`,
       width: `${startToEndHours * 100}%`,
@@ -43,12 +42,11 @@ function TimelineTask({ task, startOfWeek }) {
 		
 	};
 
-
   return (
 		<Link
 			to={`/task/${task.id}`}
 			className="timeline-task"
-      style={getTaskStyle(task)}
+      style={getTaskStyleWeek(task)}
 			key={task.id}
 			onClick={() => dispatch(setSelectedTask(task))}
 		>
@@ -62,8 +60,8 @@ function TimelineTask({ task, startOfWeek }) {
 					</div>
 				</div>
 				<h5 className="text">
-					{task.description.slice(0, 15)}
-					...
+					{task.description.length > 15 ?
+						`${task.description.slice(0, 15)}...`: task.description}
 				</h5>
 			</> :
 			<div className="row" style={{height: 50}}></div>}

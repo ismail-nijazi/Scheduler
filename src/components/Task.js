@@ -65,8 +65,9 @@ function Task({ task }) {
 			</div>
 		</div>
 		<h5 className="text">
-			{task.description.slice(0, 10)}
-			...
+				{task.description.length > 20 ?
+					`${task.description.slice(0, 20)}...`
+					: task.description}
 		</h5>
 	</div>
 	)

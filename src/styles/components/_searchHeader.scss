@@ -20,13 +20,12 @@
 	.search-bar {
 		display: flex;
 		max-width: 300px;
-		margin-left: 1rem;
 		input {
 			@include input;
 			padding: 8px 10px;
 			width: 100%;
 			min-width: 100px;
-			background-color: $lightGray;
+			background-color:lighten($lightGray,5);
 		}
 	}
 	.options{
@@ -37,23 +36,24 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		background-color: $lightGray;
+		background-color: lighten($lightGray,5);
 		padding: 10px;
 		z-index: $z_index_over;
 		border-radius: 4px;
 	}
-	.add-btn {
+	.add-btn{
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: $whiteText;
-		background-color: $primary;
-		margin-left: 1rem;
-		padding: 6px;
-		border: none;
+		text-decoration: none;
+		padding: 0.6rem;
 		border-radius: 3px;
-		outline: none;
-		cursor: pointer;
+		background-color: $primary;
+		margin-left: 10px;
+		color: $whiteText;
+		& > *{
+			display: block;
+		}
 	}
 	.filter {
 		position: relative;

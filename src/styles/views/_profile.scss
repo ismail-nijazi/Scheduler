@@ -4,7 +4,7 @@
   position: relative;
   background-color: $whiteText;
   width: 50%;
-  max-height: 80%;
+	max-width: 700px;
   border-radius: 7px;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -37,8 +37,8 @@
   .content {
     position: relative;
     padding-bottom: 5rem;
-    width: 70%;
-    margin: 100px auto 10px auto;
+    width: 80%;
+    margin: 2rem auto 0 auto;
     .row {
       margin-top: 1rem;
     }
@@ -81,16 +81,36 @@
   }
 }
 
+@media only screen and (max-width: 800px) {
+  .profile {
+    width: 80%;
+		.content {
+			width: 90%;
+		}
+  }
+}
+
+
 @media only screen and (max-width: 500px) {
   .profile {
     width: 90%;
-    .head {
-      height: 150px;
-      .profile-image {
-        width: 100px;
-        height: 100px;
-        bottom: -50px;
-      }
-    }
+		.content{
+			.row{
+				flex-direction: column;
+				gap: 10px;
+			}
+			.col{
+				max-width: 100%;
+			}
+		}
+
+    // .head {
+    //   height: 150px;
+    //   .profile-image {
+    //     width: 100px;
+    //     height: 100px;
+    //     bottom: -50px;
+    //   }
+    // }
   }
 }

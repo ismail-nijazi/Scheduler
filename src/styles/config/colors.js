@@ -16,7 +16,7 @@ export const colors = {
 	pirmary: "#FFC495",
 	secondary: "#F15C5C",
 	text: "#222",
-	defaultProject: "#ff6e6eaa",
+	defaultProject: "#FFAE6Daa",
 }
 
 export const statusColors = {

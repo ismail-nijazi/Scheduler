@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import TimelineView from '../views/TimelineView';
 import TasksView from '../views/TasksView';
@@ -8,6 +8,15 @@ import Navbar from '../components/Navbar';
 import NewProjectView from '../views/NewProjectView';
 import ProjectView from '../views/ProjectView';
 import ProfileView from '../views/ProfileView';
+import TimelineMobileView from '../views/TimelineMobile';
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
 
 const AuthRoutes = () => {
 	return (
@@ -22,6 +31,16 @@ const AuthRoutes = () => {
 
 function RootRoutes() {
 	const [navVisible, setNavVisibility] = useState(true);
+	const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+	const isSmallDevice = windowDimensions.width < 800;
+	
+	useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+	}, []);
 	
 	return (
 		<>
@@ -32,7 +51,11 @@ function RootRoutes() {
 			<div className={navVisible ? 'page with_navbar_open' : 'page'}>
 				<Routes>
 					<Route path="/" element={<Navigate to="/timeline" />} />
-					<Route path="/timeline" element={<TimelineView />} />
+					<Route path="/timeline" element={
+						isSmallDevice ?
+							<TimelineMobileView /> :
+							<TimelineView />}
+					/>
 					<Route path="/tasks" element={<TasksView />}/>
 					<Route path="/task/new" element={<EditTasksView />}/>
 					<Route path="/task/:id" element={<EditTasksView />} />
@@ -41,8 +64,11 @@ function RootRoutes() {
 					<Route path="/project/edit" element={<NewProjectView />} />
 					<Route path="/project/:id" element={<ProjectView />} />
 					<Route path="/profile" element={<ProfileView/>}/>
-					<Route path="*" element={<TimelineView />} />
-				</Routes>
+					<Route path="*" element={
+							isSmallDevice ?
+								<TimelineMobileView /> :
+								<TimelineView />} />
+					</Routes>
 			</div>
 		</>
   );

@@ -46,7 +46,7 @@ function EditTaskView({project}) {
 		if (isNewTask && project) {
 			setTask({ ...newTask, project: taskStore.tasksPerProject.project.id });
 		}
-		
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const setAsCompeletd = () => {
@@ -86,8 +86,10 @@ function EditTaskView({project}) {
 		if (validateTask()) {
 			setLoading(true);
 			await createTask(dispatch, newTask);
-			await getTasksPerProject(dispatch, taskStore.tasksPerProject.project);
 			await getTasks(dispatch);
+			if (project) {
+				await getTasksPerProject(dispatch, taskStore.tasksPerProject.project);
+			}
 			setLoading(false);
 			navigate(-1);
 		}
@@ -121,7 +123,7 @@ function EditTaskView({project}) {
 					</span>
 					<div>
 						{
-							newTask.status !== STATUSES.COMPELTED.value && 
+							(newTask.status !== STATUSES.COMPELTED.value && !isNewTask )&&
 							<button
 								type='button'
 								onClick={setAsCompeletd}
@@ -167,7 +169,8 @@ function EditTaskView({project}) {
           <div className="row">
             <div className="col">
               <label htmlFor="description">Description</label>
-              <textarea
+							<textarea
+								maxLength="500"
                 value={newTask.description}
                 onChange={(event) =>
                   setTask({
@@ -178,7 +181,7 @@ function EditTaskView({project}) {
                 name="description"
                 id="description"
                 placeholder="Description"
-                rows={6}
+								rows={6}
               />
             </div>
           </div>

@@ -17,13 +17,14 @@ function NewProjectView() {
 	const isNewProject = useLocation().pathname.includes('new');
 	const [newProject, setProject] = useState({
 		name: isNewProject ? "" :selectedProject.name,
-		color: "",
+		color: isNewProject ? "" :selectedProject.color,
 	})
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
 	const createProject = async () => {
 		setLoading(true);
+		console.log(newProject);
 		if (isNewProject) {
 			await projects.create({
 				name: newProject.name,

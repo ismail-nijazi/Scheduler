@@ -114,3 +114,25 @@
 	color: $secondary;
 	font-size: 0.9rem;
 }
+
+
+@media only screen and (max-width: 800px) {
+	.authView{
+		.window-container{
+			.window{
+				width: 80%;
+			}
+		}
+	}
+}
+
+
+@media only screen and (max-width: 500px) {
+	.authView{
+		.window-container{
+			.window{
+				width: 90%;
+			}
+		}
+	}
+}

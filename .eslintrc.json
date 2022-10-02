@@ -16,8 +16,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react",
-		"react-hooks"
+      "react",
+			"react-hooks"
     ],
     "rules": {
 			"no-unused-vars": [
