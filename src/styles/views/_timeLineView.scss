@@ -62,7 +62,11 @@
 		flex-grow: 1;
 		flex-shrink: 1;
 		overflow-x:hidden;
+		height: 100%;
 		.column{
+			position: sticky;
+			top: 0;
+			left: 0;
 			display: inline-block;
 			width: calc(100% / 7);
 			height: 99%;

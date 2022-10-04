@@ -10,10 +10,17 @@ const OPTION_HOUR_MINUT = {
 	minute: "2-digit",
 };
 
-function TimelineTask({ task, startOfWeek }) {
-	const tasksStore = useSelector(state => state.tasks)
+function TimelineTask({ task, startOfWeek, endOfWeek }) {
+	const tasksStore = useSelector(state => state.tasks);
 	const dispatch = useDispatch();
-	const diff = Math.floor(Math.abs(task.deadline - task.starting_time) / 3600000);
+	const diff = {
+		deadlineToStart:
+			Math.floor(Math.abs(task.deadline - task.starting_time) / 3600000),
+		endOfWeekToStart:
+			Math.floor(Math.abs(endOfWeek - task.starting_time) / 3600000),
+		startOfWeekToDeadline: 
+			Math.floor(Math.abs(startOfWeek - task.deadline) / 3600000),
+	};
 	
   const getTaskStyleWeek = () => {
     const taskStartTime = new Date(task.starting_time);
@@ -50,7 +57,11 @@ function TimelineTask({ task, startOfWeek }) {
 			key={task.id}
 			onClick={() => dispatch(setSelectedTask(task))}
 		>
-			{diff > 12 ? <>
+			{(diff.deadlineToStart > 12 &&
+				diff.startOfWeekToDeadline > 12 &&
+				diff.endOfWeekToStart > 12
+			) &&
+				((task.deadline - startOfWeek) > 12) ? <>
 				<div className='row'>
 					<div className='col'>
 						<span className="time">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import {
 	FaAngleRight,
@@ -12,24 +12,30 @@ import { signOut } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from "../firebase";
 import { setLogin } from '../store/slices/user';
-import { getTasksPerProject } from '../store/slices/tasks';
+import { getTasks, getTasksPerProject } from '../store/slices/tasks';
+import Papa from "papaparse";
 import Spinner from './Spinner';
+import { tasks } from '../services/database';
 
 function Navbar({ visible, setVisibility }) {
 	const [optionsVisible, showOptions] = useState(false);
 	const [csvURL, setExportURL] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [importing, setImporting] = useState(false);
+	const [exporting, setExporting] = useState(false);
+	const [importedData, setImportedData] = useState(null);
 	const profile = useSelector(state => state.profile);
 	const tasksStore = useSelector(state => state.tasks);
+	const importInput = useRef();
 	const navigate = useNavigate();
-  const dispatch = useDispatch();
-
+	const dispatch = useDispatch();
+	
   const navButtonOnClick = () => {
     setVisibility(!visible);
 	};
 
 	const exportUserData = () => {
-		setLoading(true);
+		setExporting(true);
 		let csvHeader = [
 			"Starting time", 
 			"Deadline", 
@@ -55,10 +61,59 @@ function Navbar({ visible, setVisibility }) {
 		});
 
 		setExportURL('data:text/csv;charset=utf-8,' + encodeURI(csv));
-		setLoading(false);
+		setExporting(false);
 	}
 
-  return (
+	const importData = (event) => {
+		setImporting(true);
+		try {
+			Papa.parse(event.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+				complete: async function (results) {
+					const rows = results.data.slice(1);
+					const data = rows.map((item) => {
+						const itemValues = Object.values(item);
+						return {
+							starting_time: new Date(itemValues[0]),
+							deadline: new Date(itemValues[1]),
+							description: itemValues[2],
+							estimated_duration: itemValues[3],
+							status: +itemValues[5],
+							user: auth.currentUser.uid,
+						}
+					});
+					// await tasks.importToDatabase(data);
+					getTasks(dispatch);
+					if (tasksStore.tasksPerProject.project) {
+						getTasksPerProject(tasksStore.tasksPerPRoject.project);
+					}
+					setImporting(false);
+      },
+		});
+		
+		} catch (err) {
+			setImporting(false);
+			console.log(err);
+		}
+	}
+
+	return (
+		<>
+		{ (importing || exporting) && 
+			<div className="modal">
+				<div className="spinner-container">
+						<h3 style={{ marginBottom: "1rem" }}>{
+							importing &&"Importing data ..."
+						}
+						{
+							exporting &&"Generating data ..."
+						}
+						</h3>
+					<Spinner className="spinner-medium" />
+				</div>
+			</div>
+		}
     <nav className={!visible ? 'navbar' : ''}>
       <button
         type="button"
@@ -80,7 +135,15 @@ function Navbar({ visible, setVisibility }) {
 					</div>
         </button>
 				<span>{profile.user.email}</span>
-        <div className={optionsVisible ? 'options' : 'options hide'}>
+				<div className={optionsVisible ? 'options' : 'options hide'}>
+					<input 
+						ref={importInput}
+						type="file" 
+						name="inport-file" 
+						onChange={importData}  
+						accept=".csv"
+						hidden
+					/>
 					<NavLink
 						to={`/profile`}
             onClick={() => {
@@ -100,7 +163,14 @@ function Navbar({ visible, setVisibility }) {
 						disabled={loading}
           >
             Export {loading && <Spinner className="spinner-small"/>}
-          </a>
+					</a>
+					<button
+            type="button"
+						className="btn transparent-btn"
+						onClick={()=> importInput.current.click()}
+          >
+            Import
+          </button>
           {/* <button
             type="button"
             className="btn transparent-btn"
@@ -156,7 +226,8 @@ function Navbar({ visible, setVisibility }) {
 					<div className="cover"></div>
 				</div>
 			</div>
-    </nav>
+			</nav>
+		</>
   );
 }
 

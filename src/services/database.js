@@ -73,7 +73,17 @@ class DatabaseService {
 
   remove = async (id) => {
 		return await deleteDoc(doc(this.collection, id));
-  }
+	}
+	
+	importToDatabase = async (data)=>{
+		const batch = writeBatch(database);
+		data.forEach(newDoc => {
+				const docRef = doc(collection(database, this.collection.id));
+				batch.set(docRef, newDoc);
+			}
+		);
+		await batch.commit();
+	}
 }
 
 export const users = new DatabaseService('users');
