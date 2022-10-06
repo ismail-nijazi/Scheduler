@@ -8,22 +8,40 @@ import Spinner from '../components/Spinner';
 function TasksView() {
 	const tasksStore = useSelector(state => state.tasks)
 	const [tasks, setTasks] = useState(tasksStore.tasks);
+	const [typingTimeout, setTypingTimeout] = useState(0);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setTasks(tasksStore.tasks);
 	}, [tasksStore.tasks]);
 
+
+	const search = (searchPhrase) => {
+		setTypingTimeout(setTimeout(() => {
+			const filteredTasks = tasksStore.tasks.filter((task) => {
+				if (
+					task.description.toLowerCase().includes(searchPhrase)
+						// ||task.category_id.toLowerCase().includes(searchPhrase)
+					) {
+						return true;
+					}
+						return false;
+				}
+			);
+			console.log(filteredTasks.length)
+			setTasks(filteredTasks);
+			setLoading(false);
+		}, 1000))
+	}
+
 	const onSearch = (searchPhrase) => {
-		const filteredTasks = tasksStore.tasks.filter((task) => {
-			if (
-				task.description.toLowerCase().includes(searchPhrase)
-				// ||task.category_id.toLowerCase().includes(searchPhrase)
-			) {
-				return true;
-			}
-			return false;
-		});
-		setTasks(filteredTasks);
+		if (typingTimeout) {
+			clearTimeout(typingTimeout);
+		}
+		if (!loading) {
+			setLoading(true);
+		}
+		search(searchPhrase);
 	}
 
 	return (
@@ -34,7 +52,7 @@ function TasksView() {
 				sort={(sortBy) => setTasks(sortTasks(sortBy,tasks))}
 				newTaskRoute="/task/new"
 			/>
-			{tasksStore.loading ?
+			{tasksStore.loading || loading ?
 				<main className="spinner-container">
 					<Spinner className="spinner-medium"/>
 				</main> :

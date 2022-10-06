@@ -36,7 +36,7 @@ function Task({ task }) {
 					"en-US", OPTION_DATE)}
 				</span>
 				<div className="status">
-						<span className="status-text">{ status.text }</span>
+					<span className="status-text">{ status.text }</span>
 					<span className="status-indicator" style={
 						{
 							backgroundColor: status.color

@@ -1,7 +1,7 @@
 @import '../config/config';
 
 .timeline-task {
-  padding: 0.8rem;
+  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
   -webkit-box-shadow: 7px 6px 13px -10px $gray;
@@ -32,8 +32,8 @@
 
 .task {
   box-shadow: none;
-  border: 1px solid $lightGray;
   margin-top: 5px;
+	background-color: #eee;
   cursor: default;
   &:hover {
     outline: none;
@@ -42,7 +42,7 @@
     flex-grow: 2;
   }
 	.time {
-		color: darken($gray, 20);
+		color: darken($primary, 15);
   }
   .buttons {
     display: flex;

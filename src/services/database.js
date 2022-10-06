@@ -10,7 +10,8 @@ import {
 	where,
 	writeBatch
 } from "firebase/firestore";
-import { database,auth } from "../firebase";
+import { database, auth } from "../firebase";
+
 class DatabaseService {
   collection
 
@@ -91,14 +92,15 @@ export const tasks = new DatabaseService('task');
 // export const status = new DatabaseService('status');
 export const projects = new DatabaseService('projects');
 
-
 // const batch = writeBatch(database);
 
 // data.forEach((newDoc) => {
 // 	const docRef = doc(collection(database, "task")); //automatically generate unique id
 // 	const row = {...newDoc, 
 // 		starting_time: new Date(newDoc.starting_time), 
-// 		deadline: new Date(newDoc.deadline)}
-//   batch.set(docRef, newDoc);
+// 		deadline: new Date(newDoc.deadline),
+// 		user: "i8zvyRmHCpTOvU35XorrOcmYeh62"
+// 	}
+//   batch.set(docRef, row);
 // });
 // batch.commit();
