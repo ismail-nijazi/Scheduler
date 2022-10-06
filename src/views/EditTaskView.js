@@ -69,6 +69,10 @@ function EditTaskView({project}) {
 			setError("The deadline should be after starting time!");
 			return false;
 		}
+		else if (newTask.estimated_duration == 0) {
+			setError("The duration cant't be zero!");
+			return false;
+		}
 		else if (
 			(userProfile.capacity - sumEstimatedDuration) < 0 ||
 			(sumEstimatedDuration - newTask.estimated_duration) < 0

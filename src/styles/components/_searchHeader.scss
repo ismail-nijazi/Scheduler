@@ -40,6 +40,8 @@
 		padding: 10px;
 		z-index: $z_index_over;
 		border-radius: 4px;
+		-webkit-box-shadow: 5px 6px 10px -3px rgba(54, 54, 54, 0.5);
+		box-shadow: 5px 6px 10px -3px rgba(54, 54, 54, 0.5);
 	}
 	.add-btn{
 		display: flex;
@@ -79,6 +81,36 @@
 		}
 		.hide {
 			display: none;
+		}
+	}
+}
+
+
+@media only screen and (max-width: 500px) {
+	.search-header {
+		padding: 0;
+		.row{
+			flex-wrap: wrap;
+			.title-container{
+				flex-grow: 1;
+				width: 100%;
+			}
+			.search-bar{
+				max-width: 450px;
+				margin-top: 3rem;
+			}
+		}
+		.filter {
+		position: relative;
+		margin-top: 1rem;
+		.btn {
+			padding: 0;
+			color: darken($gray, 20);
+			margin-left: auto;
+		}
+		.options {
+			top: 1rem;
+			}
 		}
 	}
 }

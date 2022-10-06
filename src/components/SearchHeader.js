@@ -21,7 +21,7 @@ function SearchHeader({ title ,onSearch, sort, options,newTaskRoute }) {
 	return (
 		<header className="search-header">
 			<div className="row">
-				<div>
+				<div className="title-container">
 					<h3 className="title"> {title.toUpperCase()}{
 						options &&
 						<button

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedTask } from '../store/slices/tasks';
 import {colors} from '../styles/config/colors';
@@ -34,7 +34,7 @@ function TimelineTaskMobile({ task }) {
 			key={task.id}
 			onClick={onClick}
 			sx={{
-				cursor:"pointer"
+				cursor: "pointer",
 			}}
 		>
 			<TimelineOppositeContent color="text.secondary">

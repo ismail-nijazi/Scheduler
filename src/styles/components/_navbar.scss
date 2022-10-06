@@ -129,6 +129,9 @@ nav {
       .add-icon {
         display: none;
       }
+			span{
+				margin: 0;
+			}
       &:hover {
         color: $secondary;
         .add-icon {

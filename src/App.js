@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { setLogin,setUser, setUserCapacity } from './store/slices/user';
+import { setLoading, setLogin,setUser, setUserCapacity } from './store/slices/user';
 import RootRoutes, { AuthRoutes } from './Router';
 import { auth } from "./firebase";
 import { users } from './services/database';
@@ -18,6 +18,9 @@ function App() {
 	
 	auth.onAuthStateChanged(async function (user) {
 		if (user) {
+			if (!profile.loading) {
+				dispatch(setLoading(true));
+			}
 			initUserData(dispatch, user);
 			const userInfo = await users.getOne(user.uid);
 			dispatch(setUserCapacity(userInfo.capacity));

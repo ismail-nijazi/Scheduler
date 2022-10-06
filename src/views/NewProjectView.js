@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from "react-icons/fa";
-import { Select, MenuItem} from '@mui/material';
+import { Select, MenuItem, Alert} from '@mui/material';
 import { projects } from '../services/database';
 import { auth } from '../firebase';
 import Spinner from '../components/Spinner';
@@ -19,33 +19,43 @@ function NewProjectView() {
 		name: isNewProject ? "" :selectedProject.name,
 		color: isNewProject ? "" :selectedProject.color,
 	})
+	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
-	const createProject = async () => {
-		setLoading(true);
-		console.log(newProject);
-		if (isNewProject) {
-			await projects.create({
-				name: newProject.name,
-				color: newProject.color,
-				user: auth.currentUser.uid
-			});
-		} else {
-			await projects.create({
-				name: newProject.name,
-				color: newProject.color,
-				user: auth.currentUser.uid
-			}, selectedProject.id);
-			dispatch(setTasksPerProject({
-				...tasksStore.tasksPerProject,
-				project: {...selectedProject, ...newProject}
-			}));
+	const validate = () => {
+		if (!newProject.name) {
+			setError("You have to give the project a title!")
+			return false;
 		}
+		return true;
+	}
 
-		setLoading(false);
-		navigate(-1);
-		getProjects(dispatch);					
+	const createProject = async () => {
+		if (validate()) {
+			setLoading(true);
+			if (isNewProject) {
+				await projects.create({
+					name: newProject.name,
+					color: newProject.color,
+					user: auth.currentUser.uid
+				});
+			} else {
+				await projects.create({
+					name: newProject.name,
+					color: newProject.color,
+					user: auth.currentUser.uid
+				}, selectedProject.id);
+				dispatch(setTasksPerProject({
+					...tasksStore.tasksPerProject,
+					project: {...selectedProject, ...newProject}
+				}));
+			}
+
+			setLoading(false);
+			navigate(-1);
+			getProjects(dispatch);		
+		} 		
 	}
 
 	return (
@@ -61,6 +71,11 @@ function NewProjectView() {
           </button>
         </div>
 				<div className="content">
+					<div className="row">
+						{error && <Alert 
+							className="alert" 
+							severity="error">{error}</Alert>}
+					</div>
 					<div className="row">
             <div className="col">
               <span>Title</span>

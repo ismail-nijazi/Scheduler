@@ -1,16 +1,21 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import {useDispatch} from "react-redux";
-import { login } from "../../store/slices/user";
+import {useDispatch, useSelector} from "react-redux";
+import { login, setLoading } from "../../store/slices/user";
 import Alert from '@mui/material/Alert';
 import Spinner from '../../components/Spinner';
 
 function LoginForm() {
 	const navigate = useNavigate();
+	const profile = useSelector(state => state.profile);
 	const [accountInfo, setAccountinfo] = useState({ email: "", password: "" });
 	const [error, setError] = useState("");
 	const [loading, setLoding] = useState(false);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(setLoading(false));
+	},[profile.isLoggedIn, dispatch])
 
 	const signIn = async () =>{
 		if (!accountInfo.email || !accountInfo.password) {
@@ -31,7 +36,18 @@ function LoginForm() {
 		}
 	} 
 	return (
-		<div className="window loginForm">
+		<>
+			{profile.loading && 
+				<div className="modal">
+					<div className="spinner-container">
+							<h3 style={{ marginBottom: "1rem" }}>
+									Loading...
+							</h3>
+						<Spinner className="spinner-medium" />
+					</div>
+				</div>	
+			}
+			<div className="window loginForm">
 			<h3 className="title">Log in</h3>
 			<form>
 				<div className="row">
@@ -98,6 +114,8 @@ function LoginForm() {
 				</span>
 			</div>
 		</div>
+		</>
+		
 	)
 }
 

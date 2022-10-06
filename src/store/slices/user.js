@@ -13,6 +13,7 @@ const initialState = {
 	isLoggedIn: false,
 	user: null,
 	userCapacity: 0,
+	loading: false,
 };
 
 export const MINST_HOURS_PER_WEEK = 1;
@@ -23,7 +24,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setLogin: (state, action) => {
-      state.isLoggedIn = action.payload;
+			state.isLoggedIn = action.payload;
 		},
 		forgotPassword: async (state) => {
       state.isLoggedIn = true;
@@ -33,6 +34,9 @@ const userSlice = createSlice({
 		},
 		setUserCapacity: (state, action) => {
 			state.userCapacity = action.payload;
+		},
+		setLoading: (state, action) => {
+			state.loading = action.payload;
 		}
   }
 });
@@ -41,7 +45,8 @@ export const {
 	setLogin,
 	forgotPassword,
 	setUser,
-	setUserCapacity
+	setUserCapacity,
+	setLoading
 } = userSlice.actions;
 
 export const signUp = async (dispatch, accountInfo) => {
