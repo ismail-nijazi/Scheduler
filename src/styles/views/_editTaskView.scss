@@ -10,7 +10,7 @@
     position: relative;
     padding-bottom: 5rem;
     width: 80%;
-    margin: 2rem auto 1rem auto;
+    margin: 2rem auto 0 auto;
     .row {
       margin-top: 1.2rem;
       label,
@@ -46,7 +46,7 @@
     }
 
     .footer {
-      margin-top: 5rem;
+      margin-top: 3rem;
 			display: flex;
 			gap: 1rem;
       .btn {

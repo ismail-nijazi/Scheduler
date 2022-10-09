@@ -37,7 +37,7 @@ function TimelineView() {
 		);
 	}, [tasksStore.tasks, endOfWeek,tasksStore.selectedWeek]);
 
-  const changeWeek = (previous = false) => {
+	const changeWeek = (previous = false) => {
     if (previous) {
       const lastDayOfPreviousWeek = moment(tasksStore.selectedWeek)
         .subtract(1, 'days')

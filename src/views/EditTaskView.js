@@ -33,11 +33,12 @@ function EditTaskView({project}) {
 	const taskStore = useSelector((state) => state.tasks);
 	const userProfile = useSelector((state) => state.profile);
   const isNewTask = useLocation().pathname.includes('new');
-	const [error, setError] = useState("");
 	const [newTask, setTask] = useState(
 		isNewTask ? INITIAL_TASK : taskStore.selectedTask
 	);
+	const [nextAvailableDate, setAvailableDate] = useState(null);
 	const [confirmation, showConfirmation] = useState(false);
+	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 	const status = getStatus(newTask.status);
@@ -57,10 +58,31 @@ function EditTaskView({project}) {
 			getTasksPerProject(dispatch, taskStore.tasksPerProject?.project);
 		}
 	}
+
+	const findNextAvailableWeek = () => {
+		let firstDayOfNextWeek = new moment(newTask.starting_time);
+		let nextWeek = firstDayOfNextWeek
+			.startOf('isoWeek')
+			.add(7, 'days')
+				.toDate();
+		let sumEstimatedDuration = calculateRemainedCapacity(
+			taskStore.tasks, newTask, nextWeek);
+		while ((sumEstimatedDuration
+			+ parseInt(newTask.estimated_duration)) > userProfile.userCapacity
+		) {
+			nextWeek = new moment(nextWeek).add(7, 'days').toDate();
+					console.log(nextWeek);
+
+			sumEstimatedDuration = calculateRemainedCapacity(
+			taskStore.tasks, newTask, nextWeek);
+		}
+		setAvailableDate(nextWeek);
+	}
 	
 	const validateTask = () => {
+		const taskWeek= new moment(newTask.starting_time).startOf('isoWeek').toDate();
 		const sumEstimatedDuration = calculateRemainedCapacity(
-			taskStore.tasks, userProfile.userCapacity, newTask);
+			taskStore.tasks, newTask, taskWeek);
 		if (!newTask.description) {
 			setError("You have to add a description!");
 			return false;
@@ -69,18 +91,25 @@ function EditTaskView({project}) {
 			setError("The deadline should be after starting time!");
 			return false;
 		}
-		else if (newTask.estimated_duration == 0) {
+		else if (parseInt(newTask.estimated_duration) == 0) {
 			setError("The duration cant't be zero!");
 			return false;
 		}
+		else if (parseInt(newTask.estimated_duration) > userProfile.userCapacity) {
+			setError(`The duration cant't be grater then your capacity(
+				${userProfile.userCapacity} hours/week )`);
+			return false;
+		}
 		else if (
-			(userProfile.capacity - sumEstimatedDuration) < 0 ||
-			(sumEstimatedDuration - newTask.estimated_duration) < 0
+			(sumEstimatedDuration + parseInt(newTask.estimated_duration)) >
+				userProfile.userCapacity
 		) {
 			setError(`
 			During the week that this task starts, you already have
-			several other tasks that left you with only ${sumEstimatedDuration}  hours
+			several other tasks that left you with only
+			${userProfile.userCapacity - sumEstimatedDuration}  hours
 			available to assign a new task`);
+			findNextAvailableWeek();
 			return false;
 		}
 		return true;
@@ -224,15 +253,34 @@ function EditTaskView({project}) {
               <span>Start date</span>
               <DateTimePicker
                 value={newTask.starting_time}
-                onChange={(newValue) =>
-                  setTask({
-                    ...newTask,
-                    starting_time: newValue
-                  })
+								onChange={(newValue) => {
+										setTask({
+											...newTask,
+											starting_time: newValue
+										});
+										setAvailableDate(null);
+									}
                 }
                 renderInput={(params) => <TextField {...params} />}
                 className="date-picker"
-              />
+							/>
+							<div className="row">
+								{nextAvailableDate &&
+									<Alert 
+										className="alert" 
+										severity="warning"
+										icon={false}
+									>
+										Next avaible date{": "}
+										{nextAvailableDate.toLocaleString(
+											'default', {
+												month: 'long', 
+												day: 'numeric', 
+												year: 'numeric'
+											})}
+									</Alert>
+								}
+							</div>
             </div>
             <div className="col">
               <span>Deadline</span>

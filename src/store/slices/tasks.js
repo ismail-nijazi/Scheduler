@@ -237,7 +237,7 @@ export const isTaskInSelectedWeek = (task, startOfWeek, endOfWeek) => {
   const taskStartTime = new Date(task.starting_time);
   const taskEndTime = new Date(task.deadline);
 
-  if (taskStartTime >= startOfWeek && taskStartTime <= endOfWeek) {
+	if (taskStartTime >= startOfWeek && taskStartTime <= endOfWeek) {
     return true;
   }
   if (
@@ -250,21 +250,20 @@ export const isTaskInSelectedWeek = (task, startOfWeek, endOfWeek) => {
 };
 
 export const calculateRemainedCapacity = (
-	tasksList, capacity, newTask
+	tasksList, newTask, startOfWeek
 ) => {
-	const startOfWeek = new moment(newTask.starting_time).startOf('isoWeek').toDate();
-	const endOfWeek = new moment(newTask.deadline).endOf('isoWeek').toDate();
+	const endOfWeek = new moment(startOfWeek).endOf('isoWeek').toDate();
 	const tasksInSameWeek = tasksList.filter(
 		task => {
-			return isTaskInSelectedWeek(task, startOfWeek, endOfWeek)
-				&& task.id !== newTask.id
+			return (isTaskInSelectedWeek(task, startOfWeek, endOfWeek)
+				&& task.id !== newTask.id)
 		}
 	);
 	const sumEstimatedDuration = tasksInSameWeek.reduce((total, task) =>
 	{
 		return total + parseInt(task.estimated_duration)
 	}, 0);
-	return capacity - sumEstimatedDuration;
+	return sumEstimatedDuration;
 }
 
 export const initUserData = async (dispatch) => {
