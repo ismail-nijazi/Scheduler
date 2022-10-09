@@ -1,115 +1,114 @@
-@import "../config/config";
+@import '../config/config';
 
 .search-header {
-	padding: 1rem;
-	border-top-left-radius: 6px;
-	border-top-right-radius: 6px;
-	// background-color: lighten($lightGray, 16);
-	div {
-		flex-grow: 1;
-		flex-wrap: nowrap;
-	}
+  padding: 1rem;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  // background-color: lighten($lightGray, 16);
+  div {
+    flex-grow: 1;
+    flex-wrap: nowrap;
+  }
 
-	.options-btn{
-		color: $primary;
-		font-size: 1.1rem;
-		background:transparent;
-	}
+  .options-btn {
+    color: $primary;
+    font-size: 1.1rem;
+    background: transparent;
+  }
 
-	.search-bar {
-		display: flex;
-		max-width: 300px;
-		input {
-			@include input;
-			padding: 8px 10px;
-			width: 100%;
-			min-width: 100px;
-			background-color:lighten($lightGray,5);
-		}
-	}
-	.options{
-		position: absolute;
-		list-style: none;
-		font-size: 1rem;
-		font-weight: 300;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		background-color: lighten($lightGray,5);
-		padding: 10px;
-		z-index: $z_index_over;
-		border-radius: 4px;
-		-webkit-box-shadow: 5px 6px 10px -3px rgba(54, 54, 54, 0.5);
-		box-shadow: 5px 6px 10px -3px rgba(54, 54, 54, 0.5);
-	}
-	.add-btn{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		text-decoration: none;
-		padding: 0.6rem;
-		border-radius: 3px;
-		background-color: $primary;
-		margin-left: 10px;
-		color: $whiteText;
-		& > *{
-			display: block;
-		}
-	}
-	.filter {
-		position: relative;
-		margin-top: 1rem;
-		.btn {
-			padding: 0;
-			color: darken($gray, 20);
-			margin-left: auto;
-		}
-		.options {
-			@include options;
-			background-color: $lightGray;
-			-webkit-box-shadow: 7px 8px 14px -8px rgba(0, 0, 0, 0.5);
-			box-shadow: 7px 8px 14px -8px rgba(0, 0, 0, 0.5);
-			position: absolute;
-			top: 2rem;
-			right: -1rem;
-			padding: 1rem;
-			z-index: $z_index_2;
-			.btn {
-				margin: 5px 10px;
-			}
-		}
-		.hide {
-			display: none;
-		}
-	}
+  .search-bar {
+    display: flex;
+    max-width: 300px;
+    input {
+      @include input;
+      padding: 8px 10px;
+      width: 100%;
+      min-width: 100px;
+      background-color: lighten($lightGray, 5);
+    }
+  }
+  .options {
+    position: absolute;
+    list-style: none;
+    font-size: 1rem;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: lighten($lightGray, 5);
+    padding: 10px;
+    z-index: $z_index_over;
+    border-radius: 4px;
+    -webkit-box-shadow: 5px 6px 10px -3px rgba(54, 54, 54, 0.5);
+    box-shadow: 5px 6px 10px -3px rgba(54, 54, 54, 0.5);
+  }
+  .add-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.6rem;
+    border-radius: 3px;
+    background-color: $primary;
+    margin-left: 10px;
+    color: $whiteText;
+    & > * {
+      display: block;
+    }
+  }
+  .filter {
+    position: relative;
+    margin-top: 1rem;
+    .btn {
+      padding: 0;
+      color: darken($gray, 20);
+      margin-left: auto;
+    }
+    .options {
+      @include options;
+      background-color: $lightGray;
+      -webkit-box-shadow: 7px 8px 14px -8px rgba(0, 0, 0, 0.5);
+      box-shadow: 7px 8px 14px -8px rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 2rem;
+      right: -1rem;
+      padding: 1rem;
+      z-index: $z_index_2;
+      .btn {
+        margin: 5px 10px;
+      }
+    }
+    .hide {
+      display: none;
+    }
+  }
 }
 
-
 @media only screen and (max-width: 500px) {
-	.search-header {
-		padding: 0;
-		.row{
-			flex-wrap: wrap;
-			.title-container{
-				flex-grow: 1;
-				width: 100%;
-			}
-			.search-bar{
-				max-width: 450px;
-				margin-top: 3rem;
-			}
-		}
-		.filter {
-		position: relative;
-		margin-top: 1rem;
-		.btn {
-			padding: 0;
-			color: darken($gray, 20);
-			margin-left: auto;
-		}
-		.options {
-			top: 1rem;
-			}
-		}
-	}
+  .search-header {
+    padding: 0;
+    .row {
+      flex-wrap: wrap;
+      .title-container {
+        flex-grow: 1;
+        width: 100%;
+      }
+      .search-bar {
+        max-width: 450px;
+        margin-top: 3rem;
+      }
+    }
+    .filter {
+      position: relative;
+      margin-top: 1rem;
+      .btn {
+        padding: 0;
+        color: darken($gray, 20);
+        margin-left: auto;
+      }
+      .options {
+        top: 1rem;
+      }
+    }
+  }
 }

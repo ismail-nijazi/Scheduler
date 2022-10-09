@@ -3,19 +3,19 @@
 .tasks-view {
   display: flex;
   flex-direction: column;
-	.option{
-		color: lighten($text, 30);
-		background: transparent;
-		text-align: left;
-		&:hover{
-			color: $secondary;
-		}
-	}
+  .option {
+    color: lighten($text, 30);
+    background: transparent;
+    text-align: left;
+    &:hover {
+      color: $secondary;
+    }
+  }
   main {
-		@include hideScrollbar;
+    @include hideScrollbar;
     position: relative;
     height: 100%;
-		overflow-y:scroll;
+    overflow-y: scroll;
     .no-tasks {
       position: absolute;
       left: 50%;

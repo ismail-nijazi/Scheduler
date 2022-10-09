@@ -1,51 +1,51 @@
-@use "./components/navbar";
-@use "./components/task";
-@use "./components/searchHeader";
-@use "./components/spinner";
-@use "./views/timeLineView";
-@use "./views/profile";
-@use "./views/tasksView";
-@use "./views/editTaskView";
-@use "./views/authView";
-@use "./views/newProject";
-@import "./config/config";
+@use './components/navbar';
+@use './components/task';
+@use './components/searchHeader';
+@use './components/spinner';
+@use './views/timeLineView';
+@use './views/profile';
+@use './views/tasksView';
+@use './views/editTaskView';
+@use './views/authView';
+@use './views/newProject';
+@import './config/config';
 @import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
 
-*{
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.App{
-	display: flex;
-	flex-direction: row;
-	.page{
-		flex-basis: 100%;
-		padding: 50px 80px;
-		margin: auto 0 ;
-		height: 100vh;
-		transition: margin 1s;
-	}
-	.with_navbar_open{
-		margin-left: 15%;
-	}
-	.page-container{
-		display: flex;
-		flex-flow: column;
-		height: 100%;
-		width: 85%;
-		margin: auto;
-	}
-	.spinner-container{
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		height: 100%;
-		color: $whiteText;
-	}
-	.status {
+.App {
+  display: flex;
+  flex-direction: row;
+  .page {
+    flex-basis: 100%;
+    padding: 50px 80px;
+    margin: auto 0;
+    height: 100vh;
+    transition: margin 1s;
+  }
+  .with_navbar_open {
+    margin-left: 15%;
+  }
+  .page-container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 85%;
+    margin: auto;
+  }
+  .spinner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: $whiteText;
+  }
+  .status {
     font-size: 0.9rem;
     display: inline-block;
     .status-indicator {
@@ -56,150 +56,147 @@
       border-radius: 50%;
     }
     .status-text {
-			display: inline;
+      display: inline;
       margin-right: 5px;
     }
   }
 }
 
-.confirm-pass{
-	margin-top: 1rem;
-	input{
-		@include input;
-		width: 100%;
-	}
+.confirm-pass {
+  margin-top: 1rem;
+  input {
+    @include input;
+    width: 100%;
+  }
 }
 
-.logo{
-	display: block;
-	width: 100%;
-	position: relative;
-	z-index: $z_index_1;
-	overflow: hidden;
-	.text{
-		z-index: $z_index_over;
-		display: block;
-		width: 100%;
-		text-align: center;
-		text-transform: uppercase;
-		font-size: 1.8rem;
-		font-family: 'Iceland', cursive;
-		color: $text;
-	}
+.logo {
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: $z_index_1;
+  overflow: hidden;
+  .text {
+    z-index: $z_index_over;
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    font-family: 'Iceland', cursive;
+    color: $text;
+  }
 }
 
-.alert{
-	flex-grow: 1;
-	width: 100%;
+.alert {
+  flex-grow: 1;
+  width: 100%;
 }
 
-.modal{
-	position: fixed;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom:0;
-	background-color: rgba(0,0,0,0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	z-index: $z_index_over;
-	width: 100%; /* Full width */
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: $z_index_over;
+  width: 100%; /* Full width */
   height: 100%; /* Full height */
 }
 
-.hidden{
-	display: none;
+.hidden {
+  display: none;
 }
 
-.row{
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	.col{
-		flex-grow: 1;
-	}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  .col {
+    flex-grow: 1;
+  }
 }
 
-.btn{
-	outline: none;
-	border: none;
-	border-radius: 3px;
-	font-size: 1rem;
-	padding: 5px 10px;
-	cursor: pointer;
-	color: $whiteText;
-	width: fit-content;
+.btn {
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  font-size: 1rem;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: $whiteText;
+  width: fit-content;
 }
 
-.danger-btn{
-	background-color: $secondary !important;
+.danger-btn {
+  background-color: $secondary !important;
 }
 
-.sucess-btn{
-	background-color: #48c044 !important;
+.sucess-btn {
+  background-color: #48c044 !important;
 }
 
-.primary-btn{
-	background-color: $primary !important;
+.primary-btn {
+  background-color: $primary !important;
 }
 
-.title{
-	color: darken($gray, 25);
+.title {
+  color: darken($gray, 25);
 }
 
-.transparent-btn{
-	background-color: transparent !important;
-	color: darken($gray,10);
+.transparent-btn {
+  background-color: transparent !important;
+  color: darken($gray, 10);
 }
 
-.warning{
-	display: block;
-	color: #da913d;
-	padding: 10px 0;
+.warning {
+  display: block;
+  color: #da913d;
+  padding: 10px 0;
 }
 
-.field-description{
-	margin-left: 5px;
-	border: none;
-	outline: none;
-	color: $gray;
-	font-size: 1rem;
-	cursor: pointer;
-	background:transparent;
+.field-description {
+  margin-left: 5px;
+  border: none;
+  outline: none;
+  color: $gray;
+  font-size: 1rem;
+  cursor: pointer;
+  background: transparent;
 }
 
-.select{
-	width: fit-content;
+.select {
+  width: fit-content;
 }
 
-.color-option{
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
+.color-option {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }
 
-
-@media only screen and (max-width: 768px){
-	.App{
-		.with_navbar_open{
-			margin-left: 0%;
-		}
-		.page-container{
-			width: 90%;
-		}
-	}
+@media only screen and (max-width: 768px) {
+  .App {
+    .with_navbar_open {
+      margin-left: 0%;
+    }
+    .page-container {
+      width: 90%;
+    }
+  }
 }
 
-@media only screen and (max-width: 450px){
-	.App{
-		.page{
-			padding: 2rem 2rem;
-		}
-		.page-container{
-			width: 95%;
-		}
-	}
+@media only screen and (max-width: 450px) {
+  .App {
+    .page {
+      padding: 2rem 2rem;
+    }
+    .page-container {
+      width: 95%;
+    }
+  }
 }
-
-

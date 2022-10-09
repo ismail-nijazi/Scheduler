@@ -1,21 +1,21 @@
-@import "../config/config";
+@import '../config/config';
 
-.newProject{
-	@include hideScrollbar;
-	@include modalWindow;
-	width: 40%;
-	max-width: 350px;
-	.head{
-		@include windowHeader;
-	}
-	.input{
-		@include input;
-	}
-	
-	.content{
-		margin: 2rem auto;
-		padding: 0 2rem;
-		.row {
+.newProject {
+  @include hideScrollbar;
+  @include modalWindow;
+  width: 40%;
+  max-width: 350px;
+  .head {
+    @include windowHeader;
+  }
+  .input {
+    @include input;
+  }
+
+  .content {
+    margin: 2rem auto;
+    padding: 0 2rem;
+    .row {
       margin-top: 1rem;
       label,
       span {
@@ -24,33 +24,33 @@
       input {
         @include input;
       }
-			.col{
-				display: flex;
-				flex-direction: column;
-			}
+      .col {
+        display: flex;
+        flex-direction: column;
+      }
     }
-	}
-	.footer {
-		margin-top: 5rem;
-		.btn {
-			padding: 5px 2rem;
-			margin-right: 2rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 10px;
-		}
-	}
+  }
+  .footer {
+    margin-top: 5rem;
+    .btn {
+      padding: 5px 2rem;
+      margin-right: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+  }
 }
 
-@media only screen and (max-width: 800px){
-	.newProject{
-		width: 60%;
-	}
+@media only screen and (max-width: 800px) {
+  .newProject {
+    width: 60%;
+  }
 }
 
-@media only screen and (max-width: 450px){
-	.newProject{
-		width: 80%;
-	}
+@media only screen and (max-width: 450px) {
+  .newProject {
+    width: 80%;
+  }
 }

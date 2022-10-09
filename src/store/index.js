@@ -4,10 +4,11 @@ import tasksReducer from './slices/tasks';
 
 export default configureStore({
   reducer: {
-		profile: userReducer,
-		tasks: tasksReducer
-	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-  	serializableCheck: false
-	}),
+    profile: userReducer,
+    tasks: tasksReducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    })
 });

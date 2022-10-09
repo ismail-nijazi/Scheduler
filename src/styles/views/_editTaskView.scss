@@ -1,10 +1,10 @@
 @import '../config/config';
 .edit-task {
-	@include hideScrollbar;
-	@include modalWindow;
-	position: relative;
+  @include hideScrollbar;
+  @include modalWindow;
+  position: relative;
   .head {
-		@include windowHeader;
+    @include windowHeader;
   }
   .content {
     position: relative;
@@ -35,27 +35,27 @@
         width: 100%;
         border-radius: 5px;
       }
-			.status{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				.status-text{
-					color: $text;
-				}
-			} 
+      .status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .status-text {
+          color: $text;
+        }
+      }
     }
 
     .footer {
       margin-top: 3rem;
-			display: flex;
-			gap: 1rem;
+      display: flex;
+      gap: 1rem;
       .btn {
         padding: 5px 2rem;
         margin-right: 2rem;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				gap: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
       }
     }
 
@@ -74,19 +74,19 @@
 @media only screen and (max-width: 800px) {
   .edit-task {
     width: 80%;
-		.content{
-			width: 90%;
-		}
+    .content {
+      width: 90%;
+    }
   }
 }
 
 @media only screen and (max-width: 500px) {
   .edit-task {
     width: 100%;
-		margin: 1rem;
-		.content{
-			width: 90%;
-			margin: 2rem auto 0 auto;
-		}
+    margin: 1rem;
+    .content {
+      width: 90%;
+      margin: 2rem auto 0 auto;
+    }
   }
 }

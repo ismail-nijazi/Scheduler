@@ -1,11 +1,10 @@
-import React, {useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { FaChevronRight, FaChevronLeft, FaPlus } from 'react-icons/fa';
 import TimelineTask from '../components/TimelineTask';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelectedWeek, isTaskInSelectedWeek } from '../store/slices/tasks';
-
 
 const getDates = (startDate, stopDate) => {
   const dateArray = [];
@@ -26,18 +25,18 @@ const getWeekNumber = (selectedDate = new Date()) => {
 };
 
 function TimelineView() {
-	const tasksStore = useSelector(state => state.tasks)
+  const tasksStore = useSelector((state) => state.tasks);
   const endOfWeek = moment(tasksStore.selectedWeek).endOf('isoWeek').toDate();
-	const days = getDates(tasksStore.selectedWeek, endOfWeek);
-	const dispatch = useDispatch();
-	
-	const tasks = useMemo(() => {
-		return tasksStore.tasks.filter(
-			(task) => isTaskInSelectedWeek(task, tasksStore.selectedWeek, endOfWeek)
-		);
-	}, [tasksStore.tasks, endOfWeek,tasksStore.selectedWeek]);
+  const days = getDates(tasksStore.selectedWeek, endOfWeek);
+  const dispatch = useDispatch();
 
-	const changeWeek = (previous = false) => {
+  const tasks = useMemo(() => {
+    return tasksStore.tasks.filter((task) =>
+      isTaskInSelectedWeek(task, tasksStore.selectedWeek, endOfWeek)
+    );
+  }, [tasksStore.tasks, endOfWeek, tasksStore.selectedWeek]);
+
+  const changeWeek = (previous = false) => {
     if (previous) {
       const lastDayOfPreviousWeek = moment(tasksStore.selectedWeek)
         .subtract(1, 'days')
@@ -67,9 +66,7 @@ function TimelineView() {
         <button type="button" onClick={() => changeWeek(true)}>
           <FaChevronLeft size={16} />
         </button>
-				<span className="week-number">week {
-					getWeekNumber(tasksStore.selectedWeek)
-				}</span>
+        <span className="week-number">week {getWeekNumber(tasksStore.selectedWeek)}</span>
         <button type="button" onClick={() => changeWeek()}>
           <FaChevronRight size={16} />
         </button>

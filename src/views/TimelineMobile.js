@@ -1,15 +1,11 @@
-import React, {useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { FaChevronRight, FaChevronLeft, FaPlus } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-	setSelectedWeek, 
-	isTaskInSelectedWeek
-} from '../store/slices/tasks';
+import { setSelectedWeek, isTaskInSelectedWeek } from '../store/slices/tasks';
 import TimelineTaskMobile from '../components/TimelineTaskMobile';
 import Timeline from '@mui/lab/Timeline';
-
 
 const getWeekNumber = (selectedDate = new Date()) => {
   const date = new Date(selectedDate);
@@ -20,15 +16,15 @@ const getWeekNumber = (selectedDate = new Date()) => {
 };
 
 function TimelineMobileView() {
-	const tasksStore = useSelector(state => state.tasks)
+  const tasksStore = useSelector((state) => state.tasks);
   const endOfWeek = moment(tasksStore.selectedWeek).endOf('isoWeek').toDate();
-	const dispatch = useDispatch();
-	
-	const tasks = useMemo(() => {
-		return tasksStore.tasks.filter(
-			(task) => isTaskInSelectedWeek(task, tasksStore.selectedWeek, endOfWeek)
-		);
-	}, [tasksStore.tasks, endOfWeek,tasksStore.selectedWeek]);
+  const dispatch = useDispatch();
+
+  const tasks = useMemo(() => {
+    return tasksStore.tasks.filter((task) =>
+      isTaskInSelectedWeek(task, tasksStore.selectedWeek, endOfWeek)
+    );
+  }, [tasksStore.tasks, endOfWeek, tasksStore.selectedWeek]);
 
   const changeWeek = (previous = false) => {
     if (previous) {
@@ -60,31 +56,24 @@ function TimelineMobileView() {
         <button type="button" onClick={() => changeWeek(true)}>
           <FaChevronLeft size={16} />
         </button>
-				<span className="week-number">week {
-					getWeekNumber(tasksStore.selectedWeek)
-				}</span>
+        <span className="week-number">week {getWeekNumber(tasksStore.selectedWeek)}</span>
         <button type="button" onClick={() => changeWeek()}>
           <FaChevronRight size={16} />
         </button>
-			</div>
-			<div className="tasks-mobile">
-				{tasks.length === 0 ? 
-					<div className="no-tasks">
-						<span>There is not tasks in this week</span>
-					</div>
-					:
-					<Timeline position="alternate">
-						{
-							tasks.map(task => (
-								<TimelineTaskMobile
-									task={task}
-									key={task.id}
-								/>
-							))
-						}
-					</Timeline>
-				}
-			</div>
+      </div>
+      <div className="tasks-mobile">
+        {tasks.length === 0 ? (
+          <div className="no-tasks">
+            <span>There is not tasks in this week</span>
+          </div>
+        ) : (
+          <Timeline position="alternate">
+            {tasks.map((task) => (
+              <TimelineTaskMobile task={task} key={task.id} />
+            ))}
+          </Timeline>
+        )}
+      </div>
     </div>
   );
 }

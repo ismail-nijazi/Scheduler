@@ -52,13 +52,15 @@ function ProjectView() {
         <button
           type="button"
           className="btn option"
-          onClick={() => navigate('/project/edit')}>
+          onClick={() => navigate('/project/edit')}
+        >
           Edit
         </button>
         <button
           type="button"
           className="btn option"
-          onClick={() => showConfirmation(true)}>
+          onClick={() => showConfirmation(true)}
+        >
           Delete
         </button>
       </>
@@ -101,7 +103,10 @@ function ProjectView() {
             tasksList.map((task, index) => <Task task={task} key={index} />)
           ) : (
             <div className="no-tasks">
-              <img src={require('../assets/images/no-tasks.png')} />
+              {
+                // eslint-disable-next-line no-undef
+                <img src={require('../assets/images/no-tasks.png')} />
+              }
               <span>No tasks found...</span>
             </div>
           )}

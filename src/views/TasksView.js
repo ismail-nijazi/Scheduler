@@ -58,7 +58,10 @@ function TasksView() {
             tasks.map((task, index) => <Task task={task} key={index} />)
           ) : (
             <div className="no-tasks">
-              <img src={require('../assets/images/no-tasks.png')} />
+              {
+                // eslint-disable-next-line no-undef
+                <img src={require('../assets/images/no-tasks.png')} />
+              }
               <span>No tasks found...</span>
             </div>
           )}

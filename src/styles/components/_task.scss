@@ -12,8 +12,8 @@
     font-size: 0.9rem;
     padding-right: 1rem;
     // color: darken($primary, 20);
-		color: white;
-		border-radius: 4px;
+    color: white;
+    border-radius: 4px;
   }
   .text {
     display: block;
@@ -25,15 +25,15 @@
   }
 }
 
-.mobile-task{
-	text-decoration: none;
-	color: $text;
+.mobile-task {
+  text-decoration: none;
+  color: $text;
 }
 
 .task {
   box-shadow: none;
   margin-top: 5px;
-	background-color: #eee;
+  background-color: #eee;
   cursor: default;
   &:hover {
     outline: none;
@@ -41,8 +41,8 @@
   .col-2 {
     flex-grow: 2;
   }
-	.time {
-		color: darken($primary, 15);
+  .time {
+    color: darken($primary, 15);
   }
   .buttons {
     display: flex;
