@@ -54,6 +54,10 @@
     border-bottom: 1px solid $lightGray;
     span {
       width: 100%;
+      text-align: center;
+    }
+    .today {
+      border-bottom: 4px solid $primary;
     }
   }
   .tasksContainer {

@@ -151,7 +151,7 @@ function EditTaskView({ project }) {
       <div className="edit-task">
         <div className="head">
           <span className="title">
-            {isNewTask ? 'Add a new' : 'Update the'}
+            {isNewTask ? 'Add a new' : 'Update the '}
             task
           </span>
           <div>
@@ -159,8 +159,7 @@ function EditTaskView({ project }) {
               <button
                 type="button"
                 onClick={setAsCompeletd}
-                className="btn transparent-btn"
-              >
+                className="btn transparent-btn">
                 <FaCheck />
               </button>
             )}
@@ -168,16 +167,14 @@ function EditTaskView({ project }) {
               <button
                 type="button"
                 onClick={() => showConfirmation(true)}
-                className="btn transparent-btn"
-              >
+                className="btn transparent-btn">
                 <FaTrashAlt />
               </button>
             )}
             <button
               type="button"
               className="btn transparent-btn"
-              onClick={() => navigate(-1)}
-            >
+              onClick={() => navigate(-1)}>
               <FaTimes />
             </button>
           </div>
@@ -190,8 +187,7 @@ function EditTaskView({ project }) {
                 className="status-indicator"
                 style={{
                   backgroundColor: status.color
-                }}
-              ></span>
+                }}></span>
             </div>
           </div>
           <div className="row">
@@ -234,8 +230,7 @@ function EditTaskView({ project }) {
                     project: event.target.value
                   })
                 }
-                className="select"
-              >
+                className="select">
                 <MenuItem sx={styles.menuItem} value={'No Project'}>
                   No Project
                 </MenuItem>
@@ -313,8 +308,7 @@ function EditTaskView({ project }) {
               type="button"
               className="btn primary-btn"
               onClick={submit}
-              disabled={loading}
-            >
+              disabled={loading}>
               {isNewTask ? 'Add' : 'Update'}
               {loading && <Spinner className="spinner-small" />}
             </button>

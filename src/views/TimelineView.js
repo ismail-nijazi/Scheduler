@@ -25,6 +25,7 @@ const getWeekNumber = (selectedDate = new Date()) => {
 };
 
 function TimelineView() {
+  const now = new Date();
   const tasksStore = useSelector((state) => state.tasks);
   const endOfWeek = moment(tasksStore.selectedWeek).endOf('isoWeek').toDate();
   const days = getDates(tasksStore.selectedWeek, endOfWeek);
@@ -73,7 +74,9 @@ function TimelineView() {
       </div>
       <div className="days">
         {days.map((day) => (
-          <span key={day}>
+          <span
+            key={day}
+            className={now.toDateString() === day.toDateString() ? 'today' : ''}>
             {day.toLocaleString('default', { day: 'numeric', weekday: 'short' })}
           </span>
         ))}
