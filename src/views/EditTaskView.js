@@ -151,7 +151,7 @@ function EditTaskView({ project }) {
       <div className="edit-task">
         <div className="head">
           <span className="title">
-            {isNewTask ? 'Add a new' : 'Update the '}
+            {isNewTask ? 'Add a new ' : 'Update the '}
             task
           </span>
           <div>
