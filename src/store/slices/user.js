@@ -26,9 +26,6 @@ const userSlice = createSlice({
     setLogin: (state, action) => {
       state.isLoggedIn = action.payload;
     },
-    forgotPassword: async (state) => {
-      state.isLoggedIn = true;
-    },
     setUser: (state, action) => {
       state.user = action.payload;
     },
@@ -41,8 +38,7 @@ const userSlice = createSlice({
   }
 });
 
-export const { setLogin, forgotPassword, setUser, setUserCapacity, setLoading } =
-  userSlice.actions;
+export const { setLogin, setUser, setUserCapacity, setLoading } = userSlice.actions;
 
 export const signUp = async (dispatch, accountInfo) => {
   const user = await createUserWithEmailAndPassword(
