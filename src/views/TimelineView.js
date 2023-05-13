@@ -6,7 +6,7 @@ import TimelineTask from '../components/TimelineTask';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelectedWeek, isTaskInSelectedWeek } from '../store/slices/tasks';
 
-const getDates = (startDate, stopDate) => {
+export const getDates = (startDate, stopDate) => {
   const dateArray = [];
   let currentDate = new Date(startDate);
   while (currentDate <= stopDate) {
@@ -16,7 +16,7 @@ const getDates = (startDate, stopDate) => {
   return dateArray;
 };
 
-const getWeekNumber = (selectedDate = new Date()) => {
+export const getWeekNumber = (selectedDate = new Date()) => {
   const date = new Date(selectedDate);
   const startDate = new Date(date.getFullYear(), 0, 1);
   const days = Math.floor((date - startDate) / (24 * 60 * 60 * 1000));
@@ -44,12 +44,14 @@ function TimelineView() {
         .startOf('isoWeek')
         .toDate();
       dispatch(setSelectedWeek(lastDayOfPreviousWeek));
+      console.log(lastDayOfPreviousWeek);
     } else {
       const firstDayOfNextWeek = moment(tasksStore.selectedWeek)
         .startOf('isoWeek')
         .add(7, 'days')
         .toDate();
       dispatch(setSelectedWeek(firstDayOfNextWeek));
+      console.log(firstDayOfNextWeek);
     }
   };
 
@@ -64,11 +66,16 @@ function TimelineView() {
         </div>
       </div>
       <div className="week-buttons">
-        <button type="button" onClick={() => changeWeek(true)}>
+        <button
+          type="button"
+          data-testid="previous-week-button"
+          onClick={() => changeWeek(true)}>
           <FaChevronLeft size={16} />
         </button>
-        <span className="week-number">week {getWeekNumber(tasksStore.selectedWeek)}</span>
-        <button type="button" onClick={() => changeWeek()}>
+        <span className="week-number" data-testid="week-number">
+          week {getWeekNumber(tasksStore.selectedWeek)}
+        </span>
+        <button type="button" data-testid="next-week-button" onClick={() => changeWeek()}>
           <FaChevronRight size={16} />
         </button>
       </div>
