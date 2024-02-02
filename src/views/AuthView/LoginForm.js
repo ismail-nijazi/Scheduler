@@ -8,7 +8,10 @@ import Spinner from '../../components/Spinner';
 function LoginForm() {
   const navigate = useNavigate();
   const profile = useSelector((state) => state.profile);
-  const [accountInfo, setAccountinfo] = useState({ email: '', password: '' });
+  const [accountInfo, setAccountinfo] = useState({
+    email: 'test@gmail.com',
+    password: 'password123'
+  });
   const [error, setError] = useState('');
   const [loading, setLoding] = useState(false);
   const dispatch = useDispatch();
